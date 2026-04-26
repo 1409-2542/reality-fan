@@ -1,0 +1,15 @@
+# Dependências (se algum dia usares)
+node_modules/
+.env
+.env.local
+
+# Editor
+.vscode/
+.idea/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

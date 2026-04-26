@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <title>Admin • Secret Story</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f0ff 0%, #e8eef4 100%);
+            color: #1a1a2e;
+            padding-bottom: 80px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #ff69b4, #9b2dff, #3b82f6);
+            padding: 20px 16px;
+            border-radius: 0 0 28px 28px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            color: white;
+        }
+        
+        .header h1 { font-size: 1.3rem; }
+        .header p { font-size: 0.7rem; opacity: 0.9; }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .card h2 {
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-left: 4px solid #ff69b4;
+            padding-left: 12px;
+            color: #1a1a2e;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 16px;
+            border: 1px solid #e0e0e0;
+            background: #fafafa;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: border 0.2s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #ff69b4;
+        }
+        
+        textarea { resize: vertical; min-height: 60px; }
+        
+        button {
+            background: linear-gradient(135deg, #ff69b4, #9b2dff);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.2s;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+        
+        button:active { transform: scale(0.97); }
+        
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+        
+        .btn-small {
+            width: auto;
+            padding: 6px 12px;
+            font-size: 0.7rem;
+            margin-top: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .btn-edit { background: #3b82f6; }
+        .btn-danger { background: #ef4444; }
+        
+        .item-list {
+            max-height: 350px;
+            overflow-y: auto;
+            margin-top: 12px;
+        }
+        
+        .list-item {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #eee;
+            flex-wrap: wrap;
+        }
+        
+        .list-item-content {
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .list-item-actions {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .bottom-menu {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 16px;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            z-index: 100;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            font-size: 0.65rem;
+            color: #888;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 30px;
+            transition: all 0.2s;
+        }
+        
+        .menu-item i { font-size: 1.3rem; }
+        .menu-item.active { color: #ff69b4; background: rgba(255, 105, 180, 0.1); }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 16px;
+        }
+        
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            background: white;
+            padding: 6px 12px;
+            border-radius: 30px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .checkbox-group input {
+            width: auto;
+            margin: 0;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 16px;
+            right: 16px;
+            background: #1a1a2e;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            border-radius: 40px;
+            z-index: 200;
+            animation: fadeOut 2s ease forwards;
+        }
+        
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #f0f0f0; }
+        ::-webkit-scrollbar-thumb { background: #ff69b4; border-radius: 10px; }
+        
+        .login-box {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .login-card {
+            background: white;
+            padding: 32px;
+            border-radius: 32px;
+            width: 90%;
+            max-width: 320px;
+            text-align: center;
+        }
+        
+        .photo-preview {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 8px auto;
+            display: block;
+            border: 2px solid #ff69b4;
+        }
+        
+        .row-2cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .label-hint {
+            font-size: 0.7rem;
+            color: #888;
+            margin-top: -8px;
+            margin-bottom: 12px;
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 300;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 32px;
+            padding: 24px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-mobile-alt"></i> Admin • Secret Story</h1>
+        <p>Controlo ao vivo durante a gala</p>
+    </div>
+    
+    <div class="container">
+        <!-- Tab: Concorrentes -->
+        <div id="tab-concorrentes" class="tab-content active">
+            <div class="card">
+                <h2><i class="fas fa-user-plus"></i> Adicionar Concorrente</h2>
+                <input type="text" id="concNome" placeholder="Nome completo">
+                <input type="text" id="concFotoUrl" placeholder="URL da foto (ex: https://...)">
+                <div class="label-hint">💡 Podes usar foto do Instagram ou Google Imagens</div>
+                <input type="text" id="concRivalidade" placeholder="Rivalidade (ex: Rival: Ana)">
+                <textarea id="concBio" placeholder="Bio / História (opcional)"></textarea>
+                <button id="addConcorrenteBtn"><i class="fas fa-save"></i> Adicionar</button>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-list"></i> Gerir Concorrentes</h2>
+                <div id="concorrentesList" class="item-list">
+                    <div style="opacity:0.6; text-align:center;">A carregar...</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tab: Timeline -->
+        <div id="tab-timeline" class="tab-content">
+            <div class="card">
+                <h2><i class="fas fa-clock"></i> Adicionar Evento à Timeline</h2>
+                
+                <div class="row-2cols">
+                    <select id="eventoTipo">
+                        <option value="📢">📢 Geral</option>
+                        <option value="🚪">🚪 Entrada</option>
+                        <option value="🗳️">🗳️ Nomeação</option>
+                        <option value="👑">👑 Líder/Imunidade</option>
+                        <option value="❌">❌ Expulsão</option>
+                        <option value="🏆">🏆 Prova</option>
+                        <option value="😈">😈 Castigo</option>
+                        <option value="⚔️">⚔️ Desafio</option>
+                        <option value="👑⚡">👑⚡ Prova Líder</option>
+                        <option value="🎯">🎯 Missão</option>
+                        <option value="😢">😢 Desistência</option>
+                        <option value="🤫">🤫 Segredo</option>
+                    </select>
+                    <input type="date" id="eventoData" value="">
+                </div>
+                <input type="text" id="eventoTexto" placeholder="Descrição (ex: João foi nomeado)">
+                
+                <div style="margin: 10px 0 8px 0; font-size:0.8rem;">
+                    <i class="fas fa-tag"></i> Ligar a concorrentes (opcional):
+                </div>
+                <div id="eventoConcorrentesCheckbox" class="checkbox-group">
+                    <!-- checkboxes dinâmicos -->
+                </div>
+                
+                <button id="addEventoBtn"><i class="fas fa-plus-circle"></i> Registrar Evento</button>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-history"></i> Últimos Eventos</h2>
+                <div id="ultimosEventos" class="item-list" style="max-height: 300px;">
+                    <div style="opacity:0.6; text-align:center;">A carregar...</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tab: Votações -->
+        <div id="tab-votacoes" class="tab-content">
+            <div class="card">
+                <h2><i class="fas fa-chart-simple"></i> Criar Votação</h2>
+                <input type="text" id="votPergunta" placeholder="Pergunta (ex: Quem deve sair?)">
+                
+                <div style="margin: 5px 0 8px 0; font-size:0.8rem;">
+                    <i class="fas fa-users"></i> Opções (seleciona concorrentes ou escreve manual):
+                </div>
+                <div id="votOpcoesCheckbox" class="checkbox-group">
+                    <!-- checkboxes dinâmicos -->
+                </div>
+                <textarea id="votOpcoesManual" placeholder="Ou escreve opções manualmente (separadas por vírgula)"></textarea>
+                
+                <button id="criarVotacaoBtn"><i class="fas fa-vote-yea"></i> Criar Votação</button>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-gear"></i> Gerir Votações</h2>
+                <div id="votacoesList" class="item-list">
+                    <div style="opacity:0.6; text-align:center;">A carregar...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bottom-menu">
+        <button class="menu-item active" data-tab="concorrentes">
+            <i class="fas fa-users"></i><span>Concorrentes</span>
+        </button>
+        <button class="menu-item" data-tab="timeline">
+            <i class="fas fa-clock"></i><span>Timeline</span>
+        </button>
+        <button class="menu-item" data-tab="votacoes">
+            <i class="fas fa-chart-simple"></i><span>Votações</span>
+        </button>
+    </div>
+    
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDhLsFf02lCuSB1i6Wd-Jb-c28KcGVNDro",
+            authDomain: "tvi-reality-b2cf7.firebaseapp.com",
+            projectId: "tvi-reality-b2cf7",
+            storageBucket: "tvi-reality-b2cf7.firebasestorage.app",
+            messagingSenderId: "956824114157",
+            appId: "1:956824114157:web:5205bcb8140875efeacde4",
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+        
+        const SENHA_ADMIN = "secret2025";
+        
+        document.getElementById('eventoData').value = new Date().toISOString().split('T')[0];
+        
+        if (localStorage.getItem('admin_auth') !== 'true') {
+            showLogin();
+        } else {
+            auth.signInAnonymously().then(() => initAdmin());
+        }
+        
+        function showLogin() {
+            const div = document.createElement('div');
+            div.className = 'login-box';
+            div.id = 'loginBox';
+            div.innerHTML = `
+                <div class="login-card">
+                    <h2 style="margin-bottom:20px;">🔐 Admin</h2>
+                    <input type="password" id="adminSenha" placeholder="Senha">
+                    <button id="loginSubmit" style="margin-top:16px;">Entrar</button>
+                </div>
+            `;
+            document.body.appendChild(div);
+            document.getElementById('loginSubmit').onclick = () => {
+                if (document.getElementById('adminSenha').value === SENHA_ADMIN) {
+                    localStorage.setItem('admin_auth', 'true');
+                    document.getElementById('loginBox').remove();
+                    auth.signInAnonymously().then(() => initAdmin());
+                } else {
+                    alert('Senha errada');
+                }
+            };
+        }
+        
+        function showToast(msg) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2000);
+        }
+        
+        let allContestants = [];
+        let allEvents = [];
+        let allVotacoes = [];
+        
+        function showEditEventModal(eventId, eventData) {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            
+            // Extrair tipo e texto
+            let tipoAtual = '📢';
+            let textoAtual = eventData.texto;
+            const tipos = ['📢', '🚪', '🗳️', '👑', '❌', '🏆', '😈', '⚔️', '👑⚡', '🎯', '😢', '🤫'];
+            for (const t of tipos) {
+                if (textoAtual.startsWith(t)) {
+                    tipoAtual = t;
+                    textoAtual = textoAtual.substring(t.length).trim();
+                    break;
+                }
+            }
+            
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <h3 style="margin-bottom: 20px;">✏️ Editar Evento</h3>
+                    <select id="editEventoTipo">
+                        <option value="📢" ${tipoAtual === '📢' ? 'selected' : ''}>📢 Geral</option>
+                        <option value="🚪" ${tipoAtual === '🚪' ? 'selected' : ''}>🚪 Entrada</option>
+                        <option value="🗳️" ${tipoAtual === '🗳️' ? 'selected' : ''}>🗳️ Nomeação</option>
+                        <option value="👑" ${tipoAtual === '👑' ? 'selected' : ''}>👑 Líder/Imunidade</option>
+                        <option value="❌" ${tipoAtual === '❌' ? 'selected' : ''}>❌ Expulsão</option>
+                        <option value="🏆" ${tipoAtual === '🏆' ? 'selected' : ''}>🏆 Prova</option>
+                        <option value="😈" ${tipoAtual === '😈' ? 'selected' : ''}>😈 Castigo</option>
+                        <option value="⚔️" ${tipoAtual === '⚔️' ? 'selected' : ''}>⚔️ Desafio</option>
+                        <option value="👑⚡" ${tipoAtual === '👑⚡' ? 'selected' : ''}>👑⚡ Prova Líder</option>
+                        <option value="🎯" ${tipoAtual === '🎯' ? 'selected' : ''}>🎯 Missão</option>
+                        <option value="😢" ${tipoAtual === '😢' ? 'selected' : ''}>😢 Desistência</option>
+                        <option value="🤫" ${tipoAtual === '🤫' ? 'selected' : ''}>🤫 Segredo</option>
+                    </select>
+                    <input type="text" id="editEventoTexto" value="${textoAtual.replace(/"/g, '&quot;')}" placeholder="Descrição">
+                    <input type="date" id="editEventoData" value="${eventData.data || new Date().toISOString().split('T')[0]}">
+                    <button id="salvarEventoBtn">💾 Salvar Alterações</button>
+                    <button id="cancelarEventoBtn" class="btn-secondary" style="margin-top:8px;">Cancelar</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            modal.querySelector('#salvarEventoBtn').onclick = async () => {
+                const novoTipo = modal.querySelector('#editEventoTipo').value;
+                const novoTexto = modal.querySelector('#editEventoTexto').value.trim();
+                const novaData = modal.querySelector('#editEventoData').value;
+                if (!novoTexto) return alert('Descrição obrigatória');
+                
+                const eventoCompleto = `${novoTipo} ${novoTexto}`;
+                
+                await db.collection('timeline').doc(eventId).update({
+                    texto: eventoCompleto,
+                    data: novaData
+                });
+                
+                showToast('✅ Evento atualizado!');
+                modal.remove();
+                renderUltimosEventos();
+            };
+            
+            modal.querySelector('#cancelarEventoBtn').onclick = () => modal.remove();
+        }
+        
+        function showEditVotacaoModal(votacaoId, v) {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <h3 style="margin-bottom: 20px;">✏️ Editar Votação</h3>
+                    <input type="text" id="editVotPergunta" value="${v.pergunta.replace(/"/g, '&quot;')}" placeholder="Pergunta">
+                    <div style="margin: 5px 0 8px 0; font-size:0.8rem;">Opções (separadas por vírgula):</div>
+                    <textarea id="editVotOpcoes" placeholder="Opções">${(v.opcoes || []).join(', ')}</textarea>
+                    <div style="margin: 10px 0;">
+                        <label>
+                            <input type="checkbox" id="editVotAtiva" ${v.ativa !== false ? 'checked' : ''}> Votação Ativa
+                        </label>
+                    </div>
+                    <button id="salvarVotacaoBtn">💾 Salvar Alterações</button>
+                    <button id="cancelarVotacaoBtn" class="btn-secondary" style="margin-top:8px;">Cancelar</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            modal.querySelector('#salvarVotacaoBtn').onclick = async () => {
+                const novaPergunta = modal.querySelector('#editVotPergunta').value.trim();
+                const novasOpcoes = modal.querySelector('#editVotOpcoes').value.split(',').map(o => o.trim()).filter(o => o);
+                const novaAtiva = modal.querySelector('#editVotAtiva').checked;
+                
+                if (!novaPergunta) return alert('Pergunta obrigatória');
+                if (novasOpcoes.length === 0) return alert('Pelo menos uma opção');
+                
+                await db.collection('votacoes').doc(votacaoId).update({
+                    pergunta: novaPergunta,
+                    opcoes: novasOpcoes,
+                    ativa: novaAtiva
+                });
+                
+                showToast('✅ Votação atualizada!');
+                modal.remove();
+                renderVotacoesList();
+            };
+            
+            modal.querySelector('#cancelarVotacaoBtn').onclick = () => modal.remove();
+        }
+        
+        async function initAdmin() {
+            db.collection('concorrentes').onSnapshot(snap => {
+                allContestants = [];
+                snap.forEach(doc => {
+                    allContestants.push({ id: doc.id, ...doc.data() });
+                });
+                renderConcorrentesList();
+                renderEventoCheckboxes();
+                renderVotacaoCheckboxes();
+            });
+            
+            // Eventos em tempo real
+            db.collection('timeline').orderBy('timestamp', 'desc').onSnapshot(snap => {
+                allEvents = [];
+                snap.forEach(doc => {
+                    allEvents.push({ id: doc.id, ...doc.data() });
+                });
+                renderUltimosEventos();
+            });
+            
+            renderVotacoesList();
+            
+            // Adicionar concorrente
+            document.getElementById('addConcorrenteBtn').onclick = async () => {
+                const nome = document.getElementById('concNome').value.trim();
+                if (!nome) return alert('Nome obrigatório');
+                
+                await db.collection('concorrentes').add({
+                    nome: nome,
+                    foto: document.getElementById('concFotoUrl').value.trim() || 'https://via.placeholder.com/150',
+                    rivalidades: document.getElementById('concRivalidade').value.trim(),
+                    bio: document.getElementById('concBio').value.trim(),
+                    likes: 0,
+                    teamMembers: 0,
+                    createdAt: new Date()
+                });
+                showToast(`✅ ${nome} adicionado`);
+                document.getElementById('concNome').value = '';
+                document.getElementById('concFotoUrl').value = '';
+                document.getElementById('concRivalidade').value = '';
+                document.getElementById('concBio').value = '';
+            };
+            
+            // Adicionar evento
+            document.getElementById('addEventoBtn').onclick = async () => {
+                const tipo = document.getElementById('eventoTipo').value;
+                const texto = document.getElementById('eventoTexto').value.trim();
+                if (!texto) return alert('Descrição do evento');
+                
+                const selectedConcs = [];
+                document.querySelectorAll('#eventoConcorrentesCheckbox input:checked').forEach(cb => {
+                    selectedConcs.push(cb.value);
+                });
+                
+                const dataEvento = document.getElementById('eventoData').value;
+                const eventoCompleto = selectedConcs.length > 0 
+                    ? `${tipo} ${texto} (${selectedConcs.join(', ')})`
+                    : `${tipo} ${texto}`;
+                
+                await db.collection('timeline').add({
+                    texto: eventoCompleto,
+                    data: dataEvento,
+                    concorrentesIds: selectedConcs,
+                    timestamp: new Date()
+                });
+                
+                showToast('📝 Evento registado!');
+                document.getElementById('eventoTexto').value = '';
+                document.querySelectorAll('#eventoConcorrentesCheckbox input:checked').forEach(cb => cb.checked = false);
+            };
+            
+            // Criar votação
+            document.getElementById('criarVotacaoBtn').onclick = async () => {
+                const pergunta = document.getElementById('votPergunta').value.trim();
+                if (!pergunta) return alert('Pergunta obrigatória');
+                
+                let opcoes = [];
+                const selectedConcs = [];
+                document.querySelectorAll('#votOpcoesCheckbox input:checked').forEach(cb => {
+                    selectedConcs.push(cb.value);
+                });
+                if (selectedConcs.length > 0) opcoes = selectedConcs;
+                
+                const manual = document.getElementById('votOpcoesManual').value.trim();
+                if (manual) opcoes = [...opcoes, ...manual.split(',').map(o => o.trim())];
+                if (opcoes.length === 0) return alert('Seleciona concorrentes ou escreve opções');
+                
+                await db.collection('votacoes').add({
+                    pergunta: pergunta,
+                    opcoes: opcoes,
+                    concorrentesIds: selectedConcs,
+                    ativa: true,
+                    criadoEm: new Date()
+                });
+                
+                showToast('🗳️ Votação criada!');
+                document.getElementById('votPergunta').value = '';
+                document.getElementById('votOpcoesManual').value = '';
+                document.querySelectorAll('#votOpcoesCheckbox input:checked').forEach(cb => cb.checked = false);
+                renderVotacoesList();
+            };
+        }
+        
+        function renderConcorrentesList() {
+            const container = document.getElementById('concorrentesList');
+            if (allContestants.length === 0) {
+                container.innerHTML = '<div style="opacity:0.6; text-align:center;">Nenhum concorrente</div>';
+                return;
+            }
+            container.innerHTML = allContestants.map(c => `
+                <div class="list-item">
+                    <div class="list-item-content">
+                        <strong>${c.nome}</strong><br>
+                        <span style="font-size:0.7rem;">❤️ ${c.likes||0} | 👥 ${c.teamMembers||0}</span>
+                        ${c.rivalidades ? `<br><span style="font-size:0.65rem;">⚔️ ${c.rivalidades}</span>` : ''}
+                    </div>
+                    <div class="list-item-actions">
+                        <button onclick="window.editarConcorrente('${c.id}')" class="btn-small btn-edit">✏️ Editar</button>
+                        <button onclick="window.removerConcorrente('${c.id}')" class="btn-small btn-danger">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        window.editarConcorrente = (id) => {
+            const c = allContestants.find(c => c.id === id);
+            if (c) showEditModal(c);
+        };
+        
+        function showEditModal(c) {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <h3 style="margin-bottom: 20px;">✏️ Editar ${c.nome}</h3>
+                    <input type="text" id="editNome" value="${c.nome.replace(/"/g, '&quot;')}" placeholder="Nome">
+                    <input type="text" id="editFotoUrl" value="${c.foto || ''}" placeholder="URL da foto">
+                    ${c.foto ? `<img src="${c.foto}" class="photo-preview" id="editFotoPreview" onerror="this.style.display='none'">` : ''}
+                    <input type="text" id="editRivalidade" value="${c.rivalidades || ''}" placeholder="Rivalidade">
+                    <textarea id="editBio" placeholder="Bio">${c.bio || ''}</textarea>
+                    <div style="display: flex; gap: 12px; margin-top: 16px;">
+                        <button id="salvarEditBtn" style="flex:1;">💾 Salvar</button>
+                        <button id="cancelarEditBtn" class="btn-secondary" style="flex:1;">Cancelar</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            const preview = modal.querySelector('#editFotoPreview');
+            const urlInput = modal.querySelector('#editFotoUrl');
+            if (preview && urlInput) {
+                urlInput.addEventListener('input', (e) => {
+                    if (e.target.value) preview.src = e.target.value;
+                });
+            }
+            
+            modal.querySelector('#salvarEditBtn').onclick = async () => {
+                const novoNome = modal.querySelector('#editNome').value.trim();
+                if (!novoNome) return alert('Nome obrigatório');
+                
+                await db.collection('concorrentes').doc(c.id).update({
+                    nome: novoNome,
+                    foto: modal.querySelector('#editFotoUrl').value.trim(),
+                    rivalidades: modal.querySelector('#editRivalidade').value,
+                    bio: modal.querySelector('#editBio').value
+                });
+                
+                showToast(`✅ ${c.nome} atualizado!`);
+                modal.remove();
+            };
+            
+            modal.querySelector('#cancelarEditBtn').onclick = () => modal.remove();
+        }
+        
+        window.removerConcorrente = async (id) => {
+            if (confirm('Remover concorrente? Stats serão perdidas.')) {
+                await db.collection('concorrentes').doc(id).delete();
+                showToast('🗑️ Removido');
+            }
+        };
+        
+        function renderEventoCheckboxes() {
+            const container = document.getElementById('eventoConcorrentesCheckbox');
+            if (allContestants.length === 0) {
+                container.innerHTML = '<span style="opacity:0.5;">Nenhum concorrente ainda</span>';
+                return;
+            }
+            container.innerHTML = allContestants.map(c => `
+                <label>
+                    <input type="checkbox" value="${c.nome.replace(/"/g, '&quot;')}"> ${c.nome}
+                </label>
+            `).join('');
+        }
+        
+        function renderVotacaoCheckboxes() {
+            const container = document.getElementById('votOpcoesCheckbox');
+            if (allContestants.length === 0) {
+                container.innerHTML = '<span style="opacity:0.5;">Adiciona concorrentes primeiro</span>';
+                return;
+            }
+            container.innerHTML = allContestants.map(c => `
+                <label>
+                    <input type="checkbox" value="${c.nome.replace(/"/g, '&quot;')}"> ${c.nome}
+                </label>
+            `).join('');
+        }
+        
+        function renderUltimosEventos() {
+            const container = document.getElementById('ultimosEventos');
+            if (allEvents.length === 0) {
+                container.innerHTML = '<div style="opacity:0.6; text-align:center;">Sem eventos ainda</div>';
+                return;
+            }
+            let html = '';
+            allEvents.slice(0, 20).forEach(ev => {
+                const data = ev.data || '--/--';
+                html += `
+                    <div class="list-item">
+                        <div class="list-item-content">
+                            <strong>${data}</strong> ${ev.texto}
+                        </div>
+                        <div class="list-item-actions">
+                            <button onclick="window.editarEvento('${ev.id}')" class="btn-small btn-edit">✏️ Editar</button>
+                            <button onclick="window.removerEvento('${ev.id}')" class="btn-small btn-danger">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+        
+        window.editarEvento = (id) => {
+            const ev = allEvents.find(e => e.id === id);
+            if (ev) showEditEventModal(id, ev);
+        };
+        
+        window.removerEvento = async (id) => {
+            if (confirm('Remover este evento da timeline?')) {
+                await db.collection('timeline').doc(id).delete();
+                showToast('🗑️ Evento removido');
+            }
+        };
+        
+        async function renderVotacoesList() {
+            const snap = await db.collection('votacoes').orderBy('criadoEm', 'desc').get();
+            const container = document.getElementById('votacoesList');
+            if (snap.empty) {
+                container.innerHTML = '<div style="opacity:0.6; text-align:center;">Nenhuma votação</div>';
+                return;
+            }
+            let html = '';
+            snap.forEach(doc => {
+                const v = doc.data();
+                const status = v.ativa === false ? '🔒 Fechada' : '🟢 Ativa';
+                html += `
+                    <div class="list-item">
+                        <div class="list-item-content">
+                            <strong>${v.pergunta.substring(0, 40)}</strong><br>
+                            <span style="font-size:0.7rem;">${status} | Opções: ${(v.opcoes || []).length}</span>
+                        </div>
+                        <div class="list-item-actions">
+                            <button onclick="window.editarVotacao('${doc.id}')" class="btn-small btn-edit">✏️ Editar</button>
+                            ${v.ativa !== false ? `<button onclick="window.fecharVotacao('${doc.id}')" class="btn-small" style="background:#f59e0b;">🔒 Fechar</button>` : ''}
+                            <button onclick="window.eliminarVotacao('${doc.id}')" class="btn-small btn-danger">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+        
+        window.editarVotacao = (id) => {
+            db.collection('votacoes').doc(id).get().then(doc => {
+                if (doc.exists) showEditVotacaoModal(id, doc.data());
+            });
+        };
+        
+        window.fecharVotacao = async (id) => {
+            await db.collection('votacoes').doc(id).update({ ativa: false });
+            showToast('🔒 Votação fechada');
+            renderVotacoesList();
+        };
+        
+        window.eliminarVotacao = async (id) => {
+            if (confirm('Eliminar votação? Os votos serão perdidos.')) {
+                // Opcional: apagar também subcoleção de votos
+                const votosSnap = await db.collection('votacoes').doc(id).collection('votos').get();
+                votosSnap.forEach(votoDoc => votoDoc.ref.delete());
+                await db.collection('votacoes').doc(id).delete();
+                showToast('🗑️ Votação eliminada');
+                renderVotacoesList();
+            }
+        };
+        
+        function initTabs() {
+            document.querySelectorAll('.menu-item').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    document.querySelectorAll('.menu-item').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    document.getElementById(`tab-${tabId}`).classList.add('active');
+                });
+            });
+        }
+        
+        initTabs();
+    </script>
+</body>
+</html>
