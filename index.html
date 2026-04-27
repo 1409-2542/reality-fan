@@ -710,73 +710,28 @@
             .then(reg => console.log('✅ Service Worker registado', reg))
             .catch(err => console.error('❌ Service Worker erro:', err));
         }
-                // ========== PWA - Botão de instalação automático ==========
-        let deferredPrompt;
-        
-        window.addEventListener('beforeinstallprompt', (e) => {
-          // Previne o popup automático do Chrome (vamos controlar nós)
-          e.preventDefault();
-          // Guarda o evento para usar depois
-          deferredPrompt = e;
-          
-          // Mostra um popup personalizado (ou podes mostrar um banner)
-          showInstallPopup();
-        });
-        
-        function showInstallPopup() {
-          // Cria um popup bonito
-          const popup = document.createElement('div');
-          popup.style.position = 'fixed';
-          popup.style.bottom = '100px';
-          popup.style.left = '16px';
-          popup.style.right = '16px';
-          popup.style.background = 'linear-gradient(135deg, #1a1a2e, #16213e)';
-          popup.style.color = 'white';
-          popup.style.padding = '16px';
-          popup.style.borderRadius = '24px';
-          popup.style.zIndex = '1000';
-          popup.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)';
-          popup.style.backdropFilter = 'blur(10px)';
-          popup.style.border = '1px solid rgba(255,255,255,0.2)';
-          popup.innerHTML = `
-            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-              <i class="fas fa-download" style="font-size: 1.5rem; color: #ff69b4;"></i>
-              <div>
-                <strong style="font-size: 1rem;">Instalar Secret Story</strong>
-                <p style="font-size: 0.7rem; opacity: 0.8; margin: 0;">Acede mais rápido como app</p>
-              </div>
-            </div>
-            <div style="display: flex; gap: 12px;">
-              <button id="installBtn" style="flex:1; background: linear-gradient(135deg, #ff69b4, #9b2dff); border: none; padding: 10px; border-radius: 40px; color: white; font-weight: bold;">📱 Instalar</button>
-              <button id="laterBtn" style="flex:1; background: rgba(255,255,255,0.1); border: none; padding: 10px; border-radius: 40px; color: white;">Agora não</button>
-            </div>
+        // Banner simples no topo da página
+        function showInstallBanner() {
+          const banner = document.createElement('div');
+          banner.style.position = 'sticky';
+          banner.style.top = '0';
+          banner.style.background = '#ff69b4';
+          banner.style.color = 'white';
+          banner.style.padding = '12px';
+          banner.style.textAlign = 'center';
+          banner.style.zIndex = '99';
+          banner.innerHTML = `
+            📱 Instala a app do Secret Story! 
+            <button id="installBannerBtn" style="background:white; color:#ff69b4; border:none; padding:4px 12px; border-radius:20px; margin-left:8px;">Instalar</button>
+            <button id="closeBannerBtn" style="background:none; border:none; color:white; margin-left:8px;">✕</button>
           `;
-          document.body.appendChild(popup);
+          document.body.insertBefore(banner, document.body.firstChild);
           
-          document.getElementById('installBtn').onclick = () => {
-            if (deferredPrompt) {
-              deferredPrompt.prompt();
-              deferredPrompt.userChoice.then((choiceResult) => {
-                if (choiceResult.outcome === 'accepted') {
-                  console.log('✅ Utilizador aceitou instalar');
-                }
-                deferredPrompt = null;
-              });
-            }
-            popup.remove();
+          document.getElementById('installBannerBtn').onclick = () => {
+            if (deferredPrompt) deferredPrompt.prompt();
+            banner.remove();
           };
-          
-          document.getElementById('laterBtn').onclick = () => {
-            popup.remove();
-            // Guarda que o utilizador recusou (não mostrar outra vez tão cedo)
-            localStorage.setItem('pwa_dismissed', Date.now());
-          };
-          
-          // Se o utilizador já recusou há menos de 1 dias, não mostra
-          const dismissed = localStorage.getItem('pwa_dismissed');
-          if (dismissed && (Date.now() - dismissed) < 1 * 24 * 60 * 60 * 1000) {
-            popup.remove();
-          }
+          document.getElementById('closeBannerBtn').onclick = () => banner.remove();
         }
     </script>
 </body>
