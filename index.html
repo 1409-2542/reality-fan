@@ -7,6 +7,11 @@
     <meta property="og:title" content="Secret Story • Desafio Final">
     <meta property="og:description" content="Acompanha em tempo real, vota, apoia a tua team e participa no chat!">
     <meta property="og:image" content="https://i.imgur.com/favicon.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Secret Story">
     <title>Secret Story • Desafio Final</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -698,6 +703,13 @@
         loadVotacoes();
         loadChat();
         initTabs();
+        
+                // Registar Service Worker (PWA)
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('✅ Service Worker registado', reg))
+            .catch(err => console.error('❌ Service Worker erro:', err));
+        }
     </script>
 </body>
 </html>
