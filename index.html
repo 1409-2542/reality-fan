@@ -4,27 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
     <meta name="theme-color" content="#ff69b4">
-    <meta property="og:title" content="Secret Story • Desafio Final">
-    <meta property="og:description" content="Acompanha em tempo real, vota, apoia a tua team e participa no chat!">
-    <meta property="og:image" content="https://i.imgur.com/favicon.png">
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon-192.png">
-    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Secret Story">
-
-        <!-- Favicon para todos os dispositivos -->
+    <meta property="og:title" content="Secret Story • Desafio Final">
+    <meta property="og:description" content="Acompanha em tempo real, vota, apoia a tua team e participa no chat!">
+    <meta property="og:image" content="https://i.imgur.com/favicon.png">
+    
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="icon" type="image/png" sizes="16x16" href="icon-192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="icon-192.png">
     <link rel="icon" type="image/png" sizes="96x96" href="icon-192.png">
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     
     <title>Secret Story • Desafio Final</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -51,7 +49,7 @@
         }
         
         .glass-card {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(12px);
             border-radius: 28px;
             border: 1px solid rgba(255, 255, 255, 0.5);
@@ -155,13 +153,15 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
         
+        /* ===== CHAT IMPROVEMENTS ===== */
         .chat-messages {
-            height: 400px;
+            flex: 1;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
             gap: 8px;
             margin-bottom: 12px;
+            padding-right: 4px;
         }
         
         .chat-message {
@@ -170,6 +170,18 @@
             padding: 10px 14px;
             max-width: 85%;
             box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            animation: fadeInUp 0.2s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .chat-message.own {
@@ -178,10 +190,31 @@
             align-self: flex-end;
         }
         
+        .chat-message .message-nick {
+            font-size: 0.7rem;
+            font-weight: 600;
+            opacity: 0.8;
+            margin-bottom: 4px;
+            display: block;
+        }
+        
+        .chat-message .message-text {
+            font-size: 0.9rem;
+            word-wrap: break-word;
+        }
+        
+        .chat-message .message-time {
+            font-size: 0.55rem;
+            opacity: 0.6;
+            margin-top: 4px;
+            text-align: right;
+        }
+        
         .chat-input-area {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             margin-top: 12px;
+            flex-shrink: 0;
         }
         
         .chat-input-area input {
@@ -191,58 +224,108 @@
             border-radius: 50px;
             font-family: inherit;
             background: white;
+            font-size: 0.95rem;
         }
         
-        .rank-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-        
-        .rank-card {
-            background: white;
-            border-radius: 20px;
-            padding: 12px;
-            margin-bottom: 8px;
+        /* ===== RANKING IMPROVEMENTS ===== */
+        .rank-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            gap: 12px;
+            background: white;
+            border-radius: 20px;
+            padding: 12px 16px;
+            transition: all 0.2s ease;
             cursor: pointer;
+            border: 1px solid rgba(0,0,0,0.04);
         }
         
-        .skeleton {
-            background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.2s infinite;
-            border-radius: 16px;
+        .rank-item:active {
+            transform: scale(0.98);
+            background: #f9f9f9;
         }
         
-        @keyframes shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-        
-        .fab-share {
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            background: linear-gradient(135deg, #ff69b4, #9b2dff);
-            width: 54px;
-            height: 54px;
-            border-radius: 27px;
+        .rank-number {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #ff69b420, #9b2dff20);
+            border-radius: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            border: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            cursor: pointer;
-            z-index: 90;
-            transition: transform 0.1s;
+            font-weight: 800;
+            font-size: 1.2rem;
         }
         
-        .fab-share:active { transform: scale(0.92); }
+        .rank-number.top-1 { background: linear-gradient(135deg, #ffd700, #ffb347); color: white; }
+        .rank-number.top-2 { background: linear-gradient(135deg, #c0c0c0, #a0a0a0); color: white; }
+        .rank-number.top-3 { background: linear-gradient(135deg, #cd7f32, #b87333); color: white; }
+        
+        .rank-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 30px;
+            object-fit: cover;
+            border: 2px solid #ff69b4;
+        }
+        
+        .rank-info {
+            flex: 1;
+        }
+        
+        .rank-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+        
+        .rank-score {
+            font-size: 0.7rem;
+            color: #888;
+            margin-top: 2px;
+        }
+        
+        .rank-value {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #ff69b4;
+        }
+        
+        .rank-type-btn.active {
+            background: linear-gradient(135deg, #ff69b4, #9b2dff) !important;
+            color: white !important;
+        }
+        
+        /* Nickname modal */
+        .nick-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 300;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .nick-modal-content {
+            background: white;
+            border-radius: 32px;
+            padding: 24px;
+            width: 100%;
+            max-width: 300px;
+        }
+        
+        .nick-modal-content input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #e0e0e0;
+            border-radius: 30px;
+            margin: 16px 0;
+            font-size: 1rem;
+        }
         
         .badge-count {
             background: #ff69b4;
@@ -326,6 +409,50 @@
             font-size: 0.7rem;
         }
         
+        .fab-share {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: linear-gradient(135deg, #ff69b4, #9b2dff);
+            width: 54px;
+            height: 54px;
+            border-radius: 27px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 90;
+            transition: transform 0.1s;
+        }
+        
+        .fab-share:active { transform: scale(0.92); }
+        
+        #scrollToBottomBtn {
+            position: absolute;
+            bottom: 100px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            display: none;
+            background: #ff69b4;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .skeleton {
+            background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.2s infinite;
+            border-radius: 16px;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: #f0f0f0; }
         ::-webkit-scrollbar-thumb { background: #ff69b4; border-radius: 10px; }
@@ -377,31 +504,59 @@
             </div>
         </div>
         
-        <!-- Tab: Ranking (lado a lado) -->
+        <!-- Tab: Ranking (redesigned for mobile) -->
         <div id="tab-ranking" class="tab-content">
-            <div class="rank-grid">
-                <div class="glass-card" style="padding: 14px;">
-                    <h2 style="font-size: 0.9rem; margin-bottom: 12px;"><i class="fas fa-users"></i> Top Teams</h2>
-                    <div id="rankingTeams"></div>
+            <div class="glass-card" style="padding: 18px;">
+                <div style="display: flex; gap: 8px; margin-bottom: 20px; background: #f0f0f0; border-radius: 40px; padding: 4px;">
+                    <button id="rankTeamsBtn" class="rank-type-btn active" style="flex:1; padding: 10px; border: none; border-radius: 32px; background: transparent; font-weight: 600; transition: all 0.2s;">👥 Teams</button>
+                    <button id="rankLikesBtn" class="rank-type-btn" style="flex:1; padding: 10px; border: none; border-radius: 32px; background: transparent; font-weight: 600; transition: all 0.2s;">❤️ Likes</button>
                 </div>
-                <div class="glass-card" style="padding: 14px;">
-                    <h2 style="font-size: 0.9rem; margin-bottom: 12px;"><i class="fas fa-heart"></i> Top Likes</h2>
-                    <div id="rankingLikes"></div>
+                
+                <div id="rankingList" style="display: flex; flex-direction: column; gap: 10px; max-height: 500px; overflow-y: auto;">
+                    <div class="skeleton" style="height: 70px; border-radius: 20px;"></div>
+                    <div class="skeleton" style="height: 70px; border-radius: 20px;"></div>
+                    <div class="skeleton" style="height: 70px; border-radius: 20px;"></div>
                 </div>
+                
+                <button id="viewAllRankingBtn" class="btn-like" style="width: 100%; margin-top: 16px; border-color: #ddd; color: #666;">
+                    <i class="fas fa-arrow-right"></i> Ver ranking completo
+                </button>
             </div>
         </div>
         
-        <!-- Tab: Chat -->
+        <!-- Tab: Chat (improved for mobile) -->
         <div id="tab-chat" class="tab-content">
-            <div class="glass-card" style="padding: 18px;">
-                <h2 style="font-size: 1rem; margin-bottom: 12px;"><i class="fas fa-comments"></i> Chat da Comunidade</h2>
-                <div id="chatMessages" class="chat-messages"></div>
-                <div class="chat-input-area">
-                    <input type="text" id="chatNick" placeholder="Teu nome" style="width: 100px;">
-                    <input type="text" id="chatMsg" placeholder="Mensagem..." onkeypress="if(event.key==='Enter') sendMessage()">
-                    <button onclick="sendMessage()" class="btn-primary" style="padding: 12px 18px; width: auto;">Enviar</button>
+            <div class="glass-card" style="padding: 18px; display: flex; flex-direction: column; height: calc(100vh - 200px); min-height: 500px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-shrink: 0;">
+                    <h2 style="font-size: 1rem;"><i class="fas fa-comments"></i> Chat da Comunidade</h2>
+                    <div style="display: flex; gap: 8px;">
+                        <span style="background: #f0f0f0; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem;">
+                            <i class="fas fa-user"></i> <span id="chatNickDisplay">Anônimo</span>
+                        </span>
+                        <button id="editNickBtn" class="share-btn-small" style="background: none;">
+                            <i class="fas fa-pen"></i>
+                        </button>
+                    </div>
                 </div>
-                <div class="label-hint" style="font-size:0.65rem; color:#999; margin-top:8px;">💡 Cada dispositivo tem um nome único</div>
+                
+                <div id="chatMessages" class="chat-messages">
+                    <div style="text-align:center; opacity:0.5; padding: 40px;">💬 Carregando mensagens...</div>
+                </div>
+                
+                <button id="scrollToBottomBtn" class="fab-share" style="position: absolute; bottom: 100px; right: 20px; width: 40px; height: 40px; display: none; background: #ff69b4; box-shadow: 0 2px 10px rgba(0,0,0,0.2);">
+                    <i class="fas fa-arrow-down"></i>
+                </button>
+                
+                <div class="chat-input-area">
+                    <input type="text" id="chatMsg" placeholder="💬 Escreve uma mensagem..." onkeypress="if(event.key==='Enter') sendMessage()" style="flex: 1; padding: 14px; border: 1px solid #e0e0e0; border-radius: 50px; font-family: inherit; background: white; font-size: 0.95rem;">
+                    <button onclick="sendMessage()" class="btn-primary" style="padding: 12px 20px; width: auto; border-radius: 50px;">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                
+                <div style="font-size:0.6rem; color:#999; margin-top: 8px; text-align: center;">
+                    <i class="fas fa-lock"></i> Mensagens anónimas • Respeita a comunidade
+                </div>
             </div>
         </div>
     </main>
@@ -466,7 +621,6 @@
         const auth = firebase.auth();
         auth.signInAnonymously().catch(console.error);
         
-        // ID único do dispositivo (simples)
         let deviceId = localStorage.getItem('deviceId');
         if (!deviceId) {
             deviceId = 'dev_' + Math.random().toString(36).substr(2, 9);
@@ -475,19 +629,25 @@
         
         let currentUserNick = localStorage.getItem('chatNick') || 'Anônimo_' + deviceId.slice(-4);
         let allContestants = [];
+        let currentRankType = 'teams';
+        let chatScrollButton = null;
+        let chatContainer = null;
         
-        // DOM elements
         const contestantsGrid = document.getElementById('contestantsGrid');
         const timelineContainer = document.getElementById('timelineContainer');
         const votacoesContainer = document.getElementById('votacoesContainer');
         const todasVotacoesContainer = document.getElementById('todasVotacoesContainer');
-        const rankingTeamsDiv = document.getElementById('rankingTeams');
-        const rankingLikesDiv = document.getElementById('rankingLikes');
+        const rankingList = document.getElementById('rankingList');
         const contestantCountSpan = document.getElementById('contestantCount');
         const heroCountSpan = document.getElementById('heroCount');
         const heroVotacoesSpan = document.getElementById('heroVotacoes');
         
-        // ========== PARTILHA ESPECÍFICA ==========
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
         function shareVotacao(pergunta, votacaoId) {
             const url = `${window.location.origin}${window.location.pathname}?votacao=${votacaoId}`;
             const text = `🗳️ Vota agora: "${pergunta}" no Secret Story!`;
@@ -508,6 +668,20 @@
             if (navigator.share) navigator.share({ title: 'Secret Story', text: `📺 ${textoLimpo}`, url });
             else { navigator.clipboard.writeText(url); alert('Link copiado!'); }
         }
+        
+        window.addLike = async (id) => { 
+            await db.collection('concorrentes').doc(id).update({ likes: firebase.firestore.FieldValue.increment(1) }); 
+            if (navigator.vibrate) navigator.vibrate(30); 
+        };
+        
+        window.joinTeam = async (id) => { 
+            await db.collection('concorrentes').doc(id).update({ teamMembers: firebase.firestore.FieldValue.increment(1) }); 
+            if (navigator.vibrate) navigator.vibrate(30); 
+        };
+        
+        window.shareConcorrente = shareConcorrente;
+        window.shareEvento = shareEvento;
+        window.shareVotacao = shareVotacao;
         
         // ========== CONCORRENTES ==========
         function loadContestants() {
@@ -531,20 +705,16 @@
             contestantsGrid.innerHTML = allContestants.map(c => `
                 <div class="contestant-card" onclick="openModal('${c.id}')">
                     <img src="${c.foto || 'https://via.placeholder.com/150'}" style="width:100%; aspect-ratio:1; object-fit:cover; border-radius:18px; margin-bottom:10px;" onerror="this.src='https://via.placeholder.com/150'">
-                    <div style="font-weight:700;">${c.nome}</div>
+                    <div style="font-weight:700;">${escapeHtml(c.nome)}</div>
                     <div style="font-size:0.7rem; color:#666; margin:6px 0;"><i class="fas fa-heart" style="color:#ff69b4;"></i> ${c.likes} | <i class="fas fa-users"></i> ${c.teamMembers}</div>
                     <div style="display: flex; gap: 6px;">
                         <button onclick="event.stopPropagation(); addLike('${c.id}')" class="btn-like" style="flex:1; padding:6px;"><i class="fas fa-heart"></i> Like</button>
                         <button onclick="event.stopPropagation(); joinTeam('${c.id}')" class="btn-team" style="flex:1; padding:6px;"><i class="fas fa-user-plus"></i> Team</button>
-                        <button onclick="event.stopPropagation(); shareConcorrente('${c.nome}', '${c.id}')" class="btn-like" style="flex:0.3; border-color:#3b82f6; color:#3b82f6;"><i class="fas fa-share-alt"></i></button>
+                        <button onclick="event.stopPropagation(); shareConcorrente('${escapeHtml(c.nome)}', '${c.id}')" class="btn-like" style="flex:0.3; border-color:#3b82f6; color:#3b82f6;"><i class="fas fa-share-alt"></i></button>
                     </div>
                 </div>
             `).join('');
         }
-        
-        window.addLike = async (id) => { await db.collection('concorrentes').doc(id).update({ likes: firebase.firestore.FieldValue.increment(1) }); if (navigator.vibrate) navigator.vibrate(30); };
-        window.joinTeam = async (id) => { await db.collection('concorrentes').doc(id).update({ teamMembers: firebase.firestore.FieldValue.increment(1) }); if (navigator.vibrate) navigator.vibrate(30); };
-        window.shareConcorrente = shareConcorrente;
         
         // ========== MODAL ==========
         window.openModal = async (id) => {
@@ -555,7 +725,7 @@
             document.getElementById('modalLikes').innerText = c.likes;
             document.getElementById('modalTeam').innerText = c.teamMembers;
             document.getElementById('modalBio').innerHTML = c.bio || 'Sem bio ainda.';
-            document.getElementById('modalRivalidade').innerHTML = c.rivalidades ? `<span style="background:#ff69b410; padding:6px 12px; border-radius:20px;"><i class="fas fa-fire"></i> ${c.rivalidades}</span>` : '';
+            document.getElementById('modalRivalidade').innerHTML = c.rivalidades ? `<span style="background:#ff69b410; padding:6px 12px; border-radius:20px;"><i class="fas fa-fire"></i> ${escapeHtml(c.rivalidades)}</span>` : '';
             document.getElementById('modalLikeBtn').onclick = () => addLike(c.id);
             document.getElementById('modalTeamBtn').onclick = () => joinTeam(c.id);
             document.getElementById('modalShareBtn').onclick = () => shareConcorrente(c.nome, c.id);
@@ -566,7 +736,7 @@
                 const ev = doc.data();
                 if (ev.concorrentesIds?.includes(c.nome) || ev.texto.includes(c.nome)) {
                     const data = ev.data || new Date(ev.timestamp?.toDate()).toLocaleDateString();
-                    eventosHtml += `<div class="timeline-item"><div style="font-size:0.7rem; color:#999;">${data}</div><div>${ev.texto}</div></div>`;
+                    eventosHtml += `<div class="timeline-item"><div style="font-size:0.7rem; color:#999;">${data}</div><div>${escapeHtml(ev.texto)}</div></div>`;
                 }
             });
             document.getElementById('modalTimeline').innerHTML = eventosHtml || '<div style="opacity:0.6;">Sem eventos</div>';
@@ -580,12 +750,13 @@
                     const votosParaC = votosSnap.docs.filter(vt => vt.data().opcao === c.nome).length;
                     const total = votosSnap.size;
                     const percent = total ? Math.round(votosParaC/total*100) : 0;
-                    votacoesHtml += `<div style="background:#f5f5f5; border-radius:16px; padding:12px; margin-bottom:12px;"><div style="font-weight:600;">🗳️ ${v.pergunta}</div><div style="margin-top:8px;"><div>${c.nome}: ${percent}% (${votosParaC} votos)</div><div style="background:#e0e0e0; border-radius:20px; height:6px;"><div style="width:${percent}%; height:100%; background:linear-gradient(90deg,#ff69b4,#9b2dff); border-radius:20px;"></div></div></div></div>`;
+                    votacoesHtml += `<div style="background:#f5f5f5; border-radius:16px; padding:12px; margin-bottom:12px;"><div style="font-weight:600;">🗳️ ${escapeHtml(v.pergunta)}</div><div style="margin-top:8px;"><div>${escapeHtml(c.nome)}: ${percent}% (${votosParaC} votos)</div><div style="background:#e0e0e0; border-radius:20px; height:6px;"><div style="width:${percent}%; height:100%; background:linear-gradient(90deg,#ff69b4,#9b2dff); border-radius:20px;"></div></div></div></div>`;
                 }
             }
             document.getElementById('modalVotacoes').innerHTML = votacoesHtml || '<div style="opacity:0.6;">Não participa em votações ativas</div>';
             document.getElementById('contestantModal').classList.add('active');
         };
+        
         window.closeModal = () => document.getElementById('contestantModal').classList.remove('active');
         
         // ========== TIMELINE ==========
@@ -596,14 +767,13 @@
                 snapshot.forEach(doc => {
                     const ev = doc.data();
                     const data = ev.data || new Date(ev.timestamp?.toDate()).toLocaleDateString();
-                    html += `<div class="timeline-item"><div style="font-size:0.7rem; color:#999;">${data}</div><div>${ev.texto}</div><button onclick="shareEvento('${ev.texto.replace(/'/g, "\\'")}')" class="share-btn-small"><i class="fas fa-share-alt"></i> Partilhar</button></div>`;
+                    html += `<div class="timeline-item"><div style="font-size:0.7rem; color:#999;">${data}</div><div>${escapeHtml(ev.texto)}</div><button onclick="shareEvento('${ev.texto.replace(/'/g, "\\'")}')" class="share-btn-small"><i class="fas fa-share-alt"></i> Partilhar</button></div>`;
                 });
                 timelineContainer.innerHTML = html;
             });
         }
-        window.shareEvento = shareEvento;
         
-        // ========== VOTAÇÕES (opções clicáveis) ==========
+        // ========== VOTAÇÕES ==========
         async function renderVotacaoCard(v, votacaoId, mostrarFechada = false) {
             const card = document.createElement('div');
             card.className = 'glass-card';
@@ -617,12 +787,12 @@
             let opcoesHtml = '';
             v.opcoes?.forEach(op => {
                 const percent = total ? Math.round((contagem[op]||0)/total*100) : 0;
-                opcoesHtml += `<div style="margin-bottom:12px;"><button data-opcao="${op.replace(/"/g, '&quot;')}" class="votar-opcao" style="width:100%; margin-bottom:4px;">🗳️ Votar ${op}</button><div><div style="display:flex; justify-content:space-between; font-size:0.75rem;"><span>${op}</span><span>${percent}% (${contagem[op]||0})</span></div><div style="background:#e0e0e0; border-radius:20px; height:6px;"><div style="width:${percent}%; height:100%; background:linear-gradient(90deg,#ff69b4,#9b2dff); border-radius:20px;"></div></div></div></div>`;
+                opcoesHtml += `<div style="margin-bottom:12px;"><button data-opcao="${op.replace(/"/g, '&quot;')}" class="votar-opcao" style="width:100%; margin-bottom:4px;">🗳️ Votar ${escapeHtml(op)}</button><div><div style="display:flex; justify-content:space-between; font-size:0.75rem;"><span>${escapeHtml(op)}</span><span>${percent}% (${contagem[op]||0})</span></div><div style="background:#e0e0e0; border-radius:20px; height:6px;"><div style="width:${percent}%; height:100%; background:linear-gradient(90deg,#ff69b4,#9b2dff); border-radius:20px;"></div></div></div></div>`;
             });
             
             const status = v.ativa === false ? '<span style="font-size:0.7rem; background:#ccc; padding:2px 10px; border-radius:20px;">Fechada</span>' : '<span style="font-size:0.7rem; background:#ff69b4; color:white; padding:2px 10px; border-radius:20px;">Ativa</span>';
             
-            card.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;"><h3 style="font-weight:700;">🗳️ ${v.pergunta}</h3>${status}</div>${opcoesHtml}${v.ativa !== false ? `<div style="margin-top:12px;"><button class="share-votacao-btn" style="background:#3b82f6; border:none; border-radius:30px; padding:8px; width:100%;"><i class="fas fa-share-alt"></i> Partilhar esta votação</button></div>` : ''}`;
+            card.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;"><h3 style="font-weight:700;">🗳️ ${escapeHtml(v.pergunta)}</h3>${status}</div>${opcoesHtml}${v.ativa !== false ? `<div style="margin-top:12px;"><button class="share-votacao-btn" style="background:#3b82f6; border:none; border-radius:30px; padding:8px; width:100%;"><i class="fas fa-share-alt"></i> Partilhar esta votação</button></div>` : ''}`;
             
             if (v.ativa !== false) {
                 card.querySelectorAll('.votar-opcao').forEach(btn => {
@@ -653,47 +823,193 @@
                 for (const v of todas) todasVotacoesContainer.appendChild(await renderVotacaoCard(v, v.id, true));
             });
         }
-        window.shareVotacao = shareVotacao;
         
-        // ========== RANKINGS ==========
+        // ========== RANKINGS (improved) ==========
         function updateRankings() {
             const sortedByTeam = [...allContestants].sort((a,b) => (b.teamMembers||0) - (a.teamMembers||0));
             const sortedByLikes = [...allContestants].sort((a,b) => (b.likes||0) - (a.likes||0));
-            rankingTeamsDiv.innerHTML = sortedByTeam.slice(0,5).map((c, idx) => `<div class="rank-card" onclick="openModal('${c.id}')"><div style="width:28px; font-weight:bold;">${idx+1}º</div><img src="${c.foto || 'https://via.placeholder.com/35'}" style="width:35px; height:35px; border-radius:50%; object-fit:cover;"><div style="flex:1;"><strong>${c.nome}</strong></div><div><i class="fas fa-users"></i> ${c.teamMembers||0}</div></div>`).join('');
-            rankingLikesDiv.innerHTML = sortedByLikes.slice(0,5).map((c, idx) => `<div class="rank-card" onclick="openModal('${c.id}')"><div style="width:28px; font-weight:bold;">${idx+1}º</div><img src="${c.foto || 'https://via.placeholder.com/35'}" style="width:35px; height:35px; border-radius:50%; object-fit:cover;"><div style="flex:1;"><strong>${c.nome}</strong></div><div><i class="fas fa-heart" style="color:#ff69b4;"></i> ${c.likes||0}</div></div>`).join('');
+            renderRankingList(currentRankType === 'teams' ? sortedByTeam : sortedByLikes);
         }
         
-        // ========== CHAT ==========
+        function renderRankingList(contestants) {
+            if (!contestants.length) {
+                rankingList.innerHTML = '<div style="text-align:center; padding:40px; opacity:0.6;">🎭 Sem concorrentes ainda</div>';
+                return;
+            }
+            
+            rankingList.innerHTML = contestants.map((c, idx) => {
+                let rankClass = '';
+                if (idx === 0) rankClass = 'top-1';
+                else if (idx === 1) rankClass = 'top-2';
+                else if (idx === 2) rankClass = 'top-3';
+                
+                const value = currentRankType === 'teams' ? (c.teamMembers || 0) : (c.likes || 0);
+                const icon = currentRankType === 'teams' ? '<i class="fas fa-users"></i>' : '<i class="fas fa-heart" style="color:#ff69b4;"></i>';
+                const label = currentRankType === 'teams' ? 'membros' : 'likes';
+                
+                return `
+                    <div class="rank-item" onclick="openModal('${c.id}')">
+                        <div class="rank-number ${rankClass}">${idx + 1}</div>
+                        <img src="${c.foto || 'https://via.placeholder.com/48'}" class="rank-avatar" onerror="this.src='https://via.placeholder.com/48'">
+                        <div class="rank-info">
+                            <div class="rank-name">${escapeHtml(c.nome)}</div>
+                            <div class="rank-score">${icon} ${value} ${label}</div>
+                        </div>
+                        <div class="rank-value">${value}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Ranking tab switching
+        document.getElementById('rankTeamsBtn')?.addEventListener('click', () => {
+            currentRankType = 'teams';
+            document.getElementById('rankTeamsBtn').classList.add('active');
+            document.getElementById('rankLikesBtn').classList.remove('active');
+            document.getElementById('rankTeamsBtn').style.background = 'linear-gradient(135deg, #ff69b4, #9b2dff)';
+            document.getElementById('rankTeamsBtn').style.color = 'white';
+            document.getElementById('rankLikesBtn').style.background = 'transparent';
+            document.getElementById('rankLikesBtn').style.color = '#666';
+            updateRankings();
+        });
+        
+        document.getElementById('rankLikesBtn')?.addEventListener('click', () => {
+            currentRankType = 'likes';
+            document.getElementById('rankLikesBtn').classList.add('active');
+            document.getElementById('rankTeamsBtn').classList.remove('active');
+            document.getElementById('rankLikesBtn').style.background = 'linear-gradient(135deg, #ff69b4, #9b2dff)';
+            document.getElementById('rankLikesBtn').style.color = 'white';
+            document.getElementById('rankTeamsBtn').style.background = 'transparent';
+            document.getElementById('rankTeamsBtn').style.color = '#666';
+            updateRankings();
+        });
+        
+        document.getElementById('viewAllRankingBtn')?.addEventListener('click', () => {
+            const sorted = currentRankType === 'teams' 
+                ? [...allContestants].sort((a,b) => (b.teamMembers||0) - (a.teamMembers||0))
+                : [...allContestants].sort((a,b) => (b.likes||0) - (a.likes||0));
+            const message = currentRankType === 'teams' 
+                ? `🏆 Ranking de Teams:\n${sorted.map((c,i) => `${i+1}º ${c.nome} - ${c.teamMembers || 0} membros`).join('\n')}`
+                : `🏆 Ranking de Likes:\n${sorted.map((c,i) => `${i+1}º ${c.nome} - ${c.likes || 0} likes`).join('\n')}`;
+            if (navigator.share) navigator.share({ title: 'Ranking Secret Story', text: message });
+            else alert(message);
+        });
+        
+        // ========== CHAT (improved) ==========
         function loadChat() {
             db.collection('chat').orderBy('timestamp', 'desc').limit(100).onSnapshot(snapshot => {
                 const container = document.getElementById('chatMessages');
-                if (snapshot.empty) { container.innerHTML = '<div style="text-align:center; opacity:0.5;">💬 Nenhuma mensagem. Sê o primeiro a falar!</div>'; return; }
+                chatContainer = container;
+                if (snapshot.empty) { 
+                    container.innerHTML = '<div style="text-align:center; opacity:0.5; padding: 40px;">💬 Nenhuma mensagem. Sê o primeiro a falar!</div>'; 
+                    return; 
+                }
+                
                 let html = '';
                 const messages = [];
                 snapshot.forEach(doc => messages.unshift({ ...doc.data(), id: doc.id }));
+                
                 messages.forEach(msg => {
                     const isOwn = msg.deviceId === deviceId;
-                    html += `<div class="chat-message ${isOwn ? 'own' : ''}"><strong style="font-size:0.8rem;">${msg.nick}</strong><div>${msg.texto}</div><div style="font-size:0.55rem; opacity:0.6;">${new Date(msg.timestamp?.toDate()).toLocaleTimeString()}</div></div>`;
+                    html += `
+                        <div class="chat-message ${isOwn ? 'own' : ''}">
+                            <span class="message-nick">${escapeHtml(msg.nick)}</span>
+                            <div class="message-text">${escapeHtml(msg.texto)}</div>
+                            <div class="message-time">${new Date(msg.timestamp?.toDate()).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</div>
+                        </div>
+                    `;
                 });
+                
+                const wasScrolledToBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 50;
                 container.innerHTML = html;
-                container.scrollTop = container.scrollHeight;
+                
+                if (wasScrolledToBottom) {
+                    container.scrollTop = container.scrollHeight;
+                }
+                
+                if (chatScrollButton) {
+                    chatScrollButton.style.display = wasScrolledToBottom ? 'none' : 'flex';
+                }
             });
         }
         
+        function initChatScroll() {
+            chatScrollButton = document.getElementById('scrollToBottomBtn');
+            chatContainer = document.getElementById('chatMessages');
+            
+            if (chatContainer && chatScrollButton) {
+                chatContainer.addEventListener('scroll', () => {
+                    const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop - chatContainer.clientHeight < 50;
+                    chatScrollButton.style.display = isAtBottom ? 'none' : 'flex';
+                });
+                
+                chatScrollButton.addEventListener('click', () => {
+                    chatContainer.scrollTo({ top: chatContainer.scrollHeight, behavior: 'smooth' });
+                });
+            }
+        }
+        
+        function showNickModal() {
+            const modal = document.createElement('div');
+            modal.className = 'nick-modal';
+            modal.innerHTML = `
+                <div class="nick-modal-content">
+                    <h3 style="margin-bottom: 8px;">✏️ Editar nome</h3>
+                    <p style="font-size:0.75rem; color:#888;">Como queres aparecer no chat?</p>
+                    <input type="text" id="newNickInput" maxlength="20" placeholder="Teu nome" value="${escapeHtml(currentUserNick)}">
+                    <div style="display: flex; gap: 10px;">
+                        <button id="saveNickBtn" class="btn-primary" style="flex:1;">Guardar</button>
+                        <button id="cancelNickBtn" class="btn-like" style="flex:1;">Cancelar</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            document.getElementById('saveNickBtn').onclick = () => {
+                const newNick = document.getElementById('newNickInput').value.trim();
+                if (newNick && newNick.length <= 20) {
+                    currentUserNick = newNick;
+                    localStorage.setItem('chatNick', newNick);
+                    document.getElementById('chatNickDisplay').innerText = newNick;
+                    document.getElementById('chatMsg').focus();
+                }
+                modal.remove();
+            };
+            document.getElementById('cancelNickBtn').onclick = () => modal.remove();
+            modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+        }
+        
         window.sendMessage = async () => {
-            const nickInput = document.getElementById('chatNick');
             const msgInput = document.getElementById('chatMsg');
-            const nick = nickInput.value.trim() || currentUserNick;
             const msg = msgInput.value.trim();
             if (!msg) return;
-            if (nick !== currentUserNick) { currentUserNick = nick; localStorage.setItem('chatNick', nick); }
-            await db.collection('chat').add({ nick: currentUserNick, texto: msg, timestamp: new Date(), deviceId });
+            
             msgInput.value = '';
+            msgInput.placeholder = '📤 A enviar...';
+            
+            await db.collection('chat').add({ 
+                nick: currentUserNick, 
+                texto: msg, 
+                timestamp: new Date(), 
+                deviceId 
+            });
+            
+            msgInput.placeholder = '💬 Escreve uma mensagem...';
+            if (navigator.vibrate) navigator.vibrate(20);
+            
+            setTimeout(() => {
+                if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 50);
         };
-        document.getElementById('chatNick').value = currentUserNick;
         
-        function shareApp() { const url = window.location.href; if (navigator.share) navigator.share({ title: 'Secret Story', text: 'Junta-te à comunidade!', url }); else { navigator.clipboard.writeText(url); alert('Link copiado!'); } }
+        // ========== SHARE APP ==========
+        function shareApp() { 
+            const url = window.location.href; 
+            if (navigator.share) navigator.share({ title: 'Secret Story', text: 'Junta-te à comunidade!', url }); 
+            else { navigator.clipboard.writeText(url); alert('Link copiado!'); } 
+        }
         
+        // ========== TABS ==========
         function initTabs() {
             document.querySelectorAll('.menu-item').forEach(tab => {
                 tab.addEventListener('click', () => {
@@ -702,46 +1018,33 @@
                     tab.classList.add('active');
                     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
                     document.getElementById(`tab-${tabId}`).classList.add('active');
+                    
+                    if (tabId === 'chat') {
+                        setTimeout(() => {
+                            if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
+                        }, 100);
+                    }
                 });
             });
         }
         
-        document.getElementById('fabShare').addEventListener('click', shareApp);
+        // ========== INITIALIZE ==========
+        document.getElementById('fabShare')?.addEventListener('click', shareApp);
+        document.getElementById('editNickBtn')?.addEventListener('click', showNickModal);
+        document.getElementById('chatNickDisplay').innerText = currentUserNick;
         
         loadContestants();
         loadTimeline();
         loadVotacoes();
         loadChat();
         initTabs();
+        setTimeout(initChatScroll, 500);
         
-                // Registar Service Worker (PWA)
+        // Service Worker (PWA)
         if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('/sw.js')
-            .then(reg => console.log('✅ Service Worker registado', reg))
-            .catch(err => console.error('❌ Service Worker erro:', err));
-        }
-        // Banner simples no topo da página
-        function showInstallBanner() {
-          const banner = document.createElement('div');
-          banner.style.position = 'sticky';
-          banner.style.top = '0';
-          banner.style.background = '#ff69b4';
-          banner.style.color = 'white';
-          banner.style.padding = '12px';
-          banner.style.textAlign = 'center';
-          banner.style.zIndex = '99';
-          banner.innerHTML = `
-            📱 Instala a app do Secret Story! 
-            <button id="installBannerBtn" style="background:white; color:#ff69b4; border:none; padding:4px 12px; border-radius:20px; margin-left:8px;">Instalar</button>
-            <button id="closeBannerBtn" style="background:none; border:none; color:white; margin-left:8px;">✕</button>
-          `;
-          document.body.insertBefore(banner, document.body.firstChild);
-          
-          document.getElementById('installBannerBtn').onclick = () => {
-            if (deferredPrompt) deferredPrompt.prompt();
-            banner.remove();
-          };
-          document.getElementById('closeBannerBtn').onclick = () => banner.remove();
+            navigator.serviceWorker.register('/sw.js')
+                .then(reg => console.log('✅ Service Worker registado', reg))
+                .catch(err => console.error('❌ Service Worker erro:', err));
         }
     </script>
 </body>
