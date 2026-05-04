@@ -783,7 +783,7 @@
             let opcoesHtml = '';
             v.opcoes?.forEach(op => {
                 const percent = total ? Math.round((contagem[op]||0)/total*100) : 0;
-                opcoesHtml += `<div style="margin-bottom:12px;"><button data-opcao="${op.replace(/"/g, '&quot;')}" class="votar-opcao" style="width:100%; margin-bottom:4px;">🗳️ ${escapeHtml(op)}</button><div><div style="display:flex; justify-content:space-between; font-size:0.75rem;"><span>${escapeHtml(op)}</span><span>${percent}% (${contagem[op]||0})</span></div><div style="background:#e0e0e0; border-radius:20px; height:6px;"><div style="width:${percent}%; height:100%; background:linear-gradient(90deg,#ff69b4,#9b2dff); border-radius:20px;"></div></div></div></div>`;
+                opcoesHtml += `<div style="margin-bottom:12px;"><button data-opcao="${op.replace(/"/g, '&quot;')}" class="votar-opcao" style="width:100%; margin-bottom:4px;">${escapeHtml(op)}</button><div><div style="display:flex; justify-content:space-between; font-size:0.75rem;"><span>${escapeHtml(op)}</span><span>${percent}% (${contagem[op]||0})</span></div><div style="background:#e0e0e0; border-radius:20px; height:6px;"><div style="width:${percent}%; height:100%; background:linear-gradient(90deg,#ff69b4,#9b2dff); border-radius:20px;"></div></div></div></div>`;
             });
             
             const status = v.ativa === false ? '<span style="font-size:0.7rem; background:#ccc; padding:2px 10px; border-radius:20px;">Fechada</span>' : '<span style="font-size:0.7rem; background:#ff69b4; color:white; padding:2px 10px; border-radius:20px;">Ativa</span>';
