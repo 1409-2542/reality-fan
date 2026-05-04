@@ -625,7 +625,7 @@
         
         let currentUserNick = localStorage.getItem('chatNick') || 'Anónimo_' + deviceId.slice(-4);
         let allContestants = [];
-        let currentRankType = 'teams';
+        let currentRankType = 'likes';
         let chatScrollButton = null;
         let chatContainer = null;
         
@@ -878,17 +878,6 @@
             document.getElementById('rankTeamsBtn').style.background = 'transparent';
             document.getElementById('rankTeamsBtn').style.color = '#666';
             updateRankings();
-        });
-        
-        document.getElementById('viewAllRankingBtn')?.addEventListener('click', () => {
-            const sorted = currentRankType === 'teams' 
-                ? [...allContestants].sort((a,b) => (b.teamMembers||0) - (a.teamMembers||0))
-                : [...allContestants].sort((a,b) => (b.likes||0) - (a.likes||0));
-            const message = currentRankType === 'teams' 
-                ? `🏆 Ranking de Teams:\n${sorted.map((c,i) => `${i+1}º ${c.nome} - ${c.teamMembers || 0} membros`).join('\n')}`
-                : `🏆 Ranking de Likes:\n${sorted.map((c,i) => `${i+1}º ${c.nome} - ${c.likes || 0} likes`).join('\n')}`;
-            if (navigator.share) navigator.share({ title: 'Ranking Secret Story', text: message });
-            else alert(message);
         });
         
         // ========== CHAT (improved) ==========
