@@ -1,4 +1,4 @@
-const CACHE_NAME = 'secret-story-v1';
+const CACHE_NAME = 'secret-story-v' + Date.now();
 const urlsToCache = [
   '/',
   '/index.html',
