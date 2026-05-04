@@ -858,17 +858,6 @@
         }
         
         // Ranking tab switching
-        document.getElementById('rankTeamsBtn')?.addEventListener('click', () => {
-            currentRankType = 'teams';
-            document.getElementById('rankTeamsBtn').classList.add('active');
-            document.getElementById('rankLikesBtn').classList.remove('active');
-            document.getElementById('rankTeamsBtn').style.background = 'linear-gradient(135deg, #ff69b4, #9b2dff)';
-            document.getElementById('rankTeamsBtn').style.color = 'white';
-            document.getElementById('rankLikesBtn').style.background = 'transparent';
-            document.getElementById('rankLikesBtn').style.color = '#666';
-            updateRankings();
-        });
-        
         document.getElementById('rankLikesBtn')?.addEventListener('click', () => {
             currentRankType = 'likes';
             document.getElementById('rankLikesBtn').classList.add('active');
@@ -880,6 +869,17 @@
             updateRankings();
         });
         
+        document.getElementById('rankTeamsBtn')?.addEventListener('click', () => {
+            currentRankType = 'teams';
+            document.getElementById('rankTeamsBtn').classList.add('active');
+            document.getElementById('rankLikesBtn').classList.remove('active');
+            document.getElementById('rankTeamsBtn').style.background = 'linear-gradient(135deg, #ff69b4, #9b2dff)';
+            document.getElementById('rankTeamsBtn').style.color = 'white';
+            document.getElementById('rankLikesBtn').style.background = 'transparent';
+            document.getElementById('rankLikesBtn').style.color = '#666';
+            updateRankings();
+        });
+               
         // ========== CHAT (improved) ==========
         function loadChat() {
             db.collection('chat').orderBy('timestamp', 'desc').limit(100).onSnapshot(snapshot => {
