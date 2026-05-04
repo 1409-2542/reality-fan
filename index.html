@@ -531,7 +531,7 @@
                     <h2 style="font-size: 1rem;"><i class="fas fa-comments"></i> Chat da Comunidade</h2>
                     <div style="display: flex; gap: 8px;">
                         <span style="background: #f0f0f0; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem;">
-                            <i class="fas fa-user"></i> <span id="chatNickDisplay">Anônimo</span>
+                            <i class="fas fa-user"></i> <span id="chatNickDisplay">Anónimo</span>
                         </span>
                         <button id="editNickBtn" class="share-btn-small" style="background: none;">
                             <i class="fas fa-pen"></i>
@@ -627,7 +627,7 @@
             localStorage.setItem('deviceId', deviceId);
         }
         
-        let currentUserNick = localStorage.getItem('chatNick') || 'Anônimo_' + deviceId.slice(-4);
+        let currentUserNick = localStorage.getItem('chatNick') || 'Anónimo_' + deviceId.slice(-4);
         let allContestants = [];
         let currentRankType = 'teams';
         let chatScrollButton = null;
@@ -787,7 +787,7 @@
             let opcoesHtml = '';
             v.opcoes?.forEach(op => {
                 const percent = total ? Math.round((contagem[op]||0)/total*100) : 0;
-                opcoesHtml += `<div style="margin-bottom:12px;"><button data-opcao="${op.replace(/"/g, '&quot;')}" class="votar-opcao" style="width:100%; margin-bottom:4px;">🗳️ Votar ${escapeHtml(op)}</button><div><div style="display:flex; justify-content:space-between; font-size:0.75rem;"><span>${escapeHtml(op)}</span><span>${percent}% (${contagem[op]||0})</span></div><div style="background:#e0e0e0; border-radius:20px; height:6px;"><div style="width:${percent}%; height:100%; background:linear-gradient(90deg,#ff69b4,#9b2dff); border-radius:20px;"></div></div></div></div>`;
+                opcoesHtml += `<div style="margin-bottom:12px;"><button data-opcao="${op.replace(/"/g, '&quot;')}" class="votar-opcao" style="width:100%; margin-bottom:4px;">🗳️ ${escapeHtml(op)}</button><div><div style="display:flex; justify-content:space-between; font-size:0.75rem;"><span>${escapeHtml(op)}</span><span>${percent}% (${contagem[op]||0})</span></div><div style="background:#e0e0e0; border-radius:20px; height:6px;"><div style="width:${percent}%; height:100%; background:linear-gradient(90deg,#ff69b4,#9b2dff); border-radius:20px;"></div></div></div></div>`;
             });
             
             const status = v.ativa === false ? '<span style="font-size:0.7rem; background:#ccc; padding:2px 10px; border-radius:20px;">Fechada</span>' : '<span style="font-size:0.7rem; background:#ff69b4; color:white; padding:2px 10px; border-radius:20px;">Ativa</span>';
