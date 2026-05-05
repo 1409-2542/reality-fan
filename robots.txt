@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://reality-fan-pi.vercel.app/sitemap.xml
