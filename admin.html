@@ -106,6 +106,7 @@
         
         .btn-edit { background: #3b82f6; }
         .btn-danger { background: #ef4444; }
+        .btn-success { background: #10b981; }
         
         .item-list {
             max-height: 350px;
@@ -244,13 +245,13 @@
         }
         
         .photo-preview {
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             object-fit: cover;
             margin: 8px auto;
             display: block;
-            border: 2px solid #ff69b4;
+            border: 3px solid #ff69b4;
         }
         
         .row-2cols {
@@ -264,6 +265,21 @@
             color: #888;
             margin-top: -8px;
             margin-bottom: 12px;
+        }
+        
+        .slug-preview {
+            background: #f0f0f0;
+            padding: 8px 12px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            margin-bottom: 12px;
+            word-break: break-all;
+            font-family: monospace;
+        }
+        
+        .slug-preview i {
+            color: #ff69b4;
+            margin-right: 6px;
         }
         
         .modal-overlay {
@@ -289,12 +305,37 @@
             max-height: 90vh;
             overflow-y: auto;
         }
+        
+        .seo-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .seo-stat-card {
+            background: linear-gradient(135deg, #ff69b410, #9b2dff10);
+            padding: 10px;
+            border-radius: 16px;
+        }
+        
+        .seo-stat-card .number {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #ff69b4;
+        }
+        
+        .seo-stat-card .label {
+            font-size: 0.65rem;
+            color: #666;
+        }
     </style>
 </head>
 <body>
     <div class="header">
         <h1><i class="fas fa-mobile-alt"></i> Admin • Secret Story</h1>
-        <p>Controlo ao vivo durante a gala</p>
+        <p>Controlo ao vivo durante a gala • SEO ready</p>
     </div>
     
     <div class="container">
@@ -302,7 +343,10 @@
         <div id="tab-concorrentes" class="tab-content active">
             <div class="card">
                 <h2><i class="fas fa-user-plus"></i> Adicionar Concorrente</h2>
-                <input type="text" id="concNome" placeholder="Nome completo">
+                <input type="text" id="concNome" placeholder="Nome completo" autocomplete="off">
+                <div id="slugPreview" class="slug-preview" style="display: none;">
+                    <i class="fas fa-link"></i> <span id="slugPreviewText"></span>
+                </div>
                 <input type="text" id="concFotoUrl" placeholder="URL da foto (ex: https://...)">
                 <div class="label-hint">💡 Podes usar foto do Instagram ou Google Imagens</div>
                 <input type="text" id="concRivalidade" placeholder="Rivalidade (ex: Rival: Ana)">
@@ -314,6 +358,15 @@
                 <h2><i class="fas fa-list"></i> Gerir Concorrentes</h2>
                 <div id="concorrentesList" class="item-list">
                     <div style="opacity:0.6; text-align:center;">A carregar...</div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-chart-line"></i> SEO Stats</h2>
+                <div class="seo-stats" id="seoStats">
+                    <div class="seo-stat-card"><div class="number" id="seoConcorrentes">0</div><div class="label">Concorrentes</div></div>
+                    <div class="seo-stat-card"><div class="number" id="seoSlugs">0</div><div class="label">Com Slug</div></div>
+                    <div class="seo-stat-card"><div class="number" id="seoPages">0</div><div class="label">Páginas SEO</div></div>
                 </div>
             </div>
         </div>
@@ -384,6 +437,48 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Tab: SEO Tools -->
+        <div id="tab-seo" class="tab-content">
+            <div class="card">
+                <h2><i class="fab fa-google"></i> Ferramentas SEO</h2>
+                
+                <div style="margin-bottom: 16px;">
+                    <h3 style="font-size: 0.9rem; margin-bottom: 8px;">📄 Sitemap.xml</h3>
+                    <div class="slug-preview" id="sitemapPreview" style="font-size: 0.7rem;">A carregar...</div>
+                    <button id="generateSitemapBtn" class="btn-small" style="width: auto; background: #10b981;">🔁 Gerar Sitemap</button>
+                </div>
+                
+                <div style="margin-bottom: 16px;">
+                    <h3 style="font-size: 0.9rem; margin-bottom: 8px;">🤖 robots.txt</h3>
+                    <div class="slug-preview" id="robotsPreview" style="font-size: 0.7rem;">A carregar...</div>
+                    <button id="copyRobotsBtn" class="btn-small" style="width: auto; background: #3b82f6;">📋 Copiar</button>
+                </div>
+                
+                <div>
+                    <h3 style="font-size: 0.9rem; margin-bottom: 8px;">🔗 URLs amigáveis (slugs)</h3>
+                    <div id="slugsList" class="item-list" style="max-height: 200px;">
+                        <div style="opacity:0.6;">A carregar...</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-share-alt"></i> Publicar nas Redes Sociais</h2>
+                <div id="eventosNaoPublicados" class="item-list" style="max-height: 200px;">
+                    <div style="opacity:0.6;">A carregar eventos...</div>
+                </div>
+                
+                <div class="checkbox-group" style="margin-top: 12px;">
+                    <label><input type="checkbox" id="autoPostFacebook"> 📘 Facebook</label>
+                    <label><input type="checkbox" id="autoPostTwitter"> 🐦 X (Twitter)</label>
+                    <label><input type="checkbox" id="autoPostInstagram"> 📷 Instagram</label>
+                </div>
+                
+                <button id="publishNowBtn" class="btn-success" style="margin-top: 8px;">📢 Publicar Selecionados</button>
+                <div class="label-hint">⚠️ Cada publicação é pré-visualizada antes de enviar</div>
+            </div>
+        </div>
     </div>
     
     <div class="bottom-menu">
@@ -395,6 +490,9 @@
         </button>
         <button class="menu-item" data-tab="votacoes">
             <i class="fas fa-chart-simple"></i><span>Votações</span>
+        </button>
+        <button class="menu-item" data-tab="seo">
+            <i class="fab fa-google"></i><span>SEO</span>
         </button>
     </div>
     
@@ -457,115 +555,62 @@
             setTimeout(() => toast.remove(), 2000);
         }
         
+        // ========== FUNÇÃO PRINCIPAL: GERAR SLUG ==========
+        function gerarSlug(nome) {
+            return nome
+                .toLowerCase()
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // remove acentos
+                .replace(/[^a-z0-9]+/g, '-') // substitui espaços/caracteres especiais por -
+                .replace(/^-|-$/g, ''); // remove traços no início/fim
+        }
+        
+        // Verificar se slug já existe
+        async function slugExists(slug, excludeId = null) {
+            const snapshot = await db.collection('concorrentes').where('slug', '==', slug).get();
+            if (snapshot.empty) return false;
+            if (excludeId && snapshot.docs[0].id === excludeId) return false;
+            return true;
+        }
+        
+        // Gerar slug único
+        async function gerarSlugUnico(nome, excludeId = null) {
+            let slug = gerarSlug(nome);
+            let slugFinal = slug;
+            let counter = 1;
+            
+            while (await slugExists(slugFinal, excludeId)) {
+                slugFinal = `${slug}-${counter}`;
+                counter++;
+            }
+            return slugFinal;
+        }
+        
+        // Previsualização do slug em tempo real
+        function setupSlugPreview() {
+            const nomeInput = document.getElementById('concNome');
+            const slugPreview = document.getElementById('slugPreview');
+            const slugPreviewText = document.getElementById('slugPreviewText');
+            
+            nomeInput.addEventListener('input', async () => {
+                const nome = nomeInput.value.trim();
+                if (nome) {
+                    const slug = await gerarSlugUnico(nome);
+                    slugPreviewText.textContent = `/concorrente/${slug}`;
+                    slugPreview.style.display = 'block';
+                } else {
+                    slugPreview.style.display = 'none';
+                }
+            });
+        }
+        
         let allContestants = [];
         let allEvents = [];
-        let allVotacoes = [];
-        
-        function showEditEventModal(eventId, eventData) {
-            const modal = document.createElement('div');
-            modal.className = 'modal-overlay';
-            
-            // Extrair tipo e texto
-            let tipoAtual = '📢';
-            let textoAtual = eventData.texto;
-            const tipos = ['📢', '🚪', '🗳️', '👑', '❌', '🏆', '😈', '⚔️', '👑⚡', '🎯', '😢', '🤫'];
-            for (const t of tipos) {
-                if (textoAtual.startsWith(t)) {
-                    tipoAtual = t;
-                    textoAtual = textoAtual.substring(t.length).trim();
-                    break;
-                }
-            }
-            
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <h3 style="margin-bottom: 20px;">✏️ Editar Evento</h3>
-                    <select id="editEventoTipo">
-                        <option value="📢" ${tipoAtual === '📢' ? 'selected' : ''}>📢 Geral</option>
-                        <option value="🚪" ${tipoAtual === '🚪' ? 'selected' : ''}>🚪 Entrada</option>
-                        <option value="🗳️" ${tipoAtual === '🗳️' ? 'selected' : ''}>🗳️ Nomeação</option>
-                        <option value="👑" ${tipoAtual === '👑' ? 'selected' : ''}>👑 Líder/Imunidade</option>
-                        <option value="❌" ${tipoAtual === '❌' ? 'selected' : ''}>❌ Expulsão</option>
-                        <option value="🏆" ${tipoAtual === '🏆' ? 'selected' : ''}>🏆 Prova</option>
-                        <option value="😈" ${tipoAtual === '😈' ? 'selected' : ''}>😈 Castigo</option>
-                        <option value="⚔️" ${tipoAtual === '⚔️' ? 'selected' : ''}>⚔️ Desafio</option>
-                        <option value="👑⚡" ${tipoAtual === '👑⚡' ? 'selected' : ''}>👑⚡ Prova Líder</option>
-                        <option value="🎯" ${tipoAtual === '🎯' ? 'selected' : ''}>🎯 Missão</option>
-                        <option value="😢" ${tipoAtual === '😢' ? 'selected' : ''}>😢 Desistência</option>
-                        <option value="🤫" ${tipoAtual === '🤫' ? 'selected' : ''}>🤫 Segredo</option>
-                    </select>
-                    <input type="text" id="editEventoTexto" value="${textoAtual.replace(/"/g, '&quot;')}" placeholder="Descrição">
-                    <input type="date" id="editEventoData" value="${eventData.data || new Date().toISOString().split('T')[0]}">
-                    <button id="salvarEventoBtn">💾 Salvar Alterações</button>
-                    <button id="cancelarEventoBtn" class="btn-secondary" style="margin-top:8px;">Cancelar</button>
-                </div>
-            `;
-            document.body.appendChild(modal);
-            
-            modal.querySelector('#salvarEventoBtn').onclick = async () => {
-                const novoTipo = modal.querySelector('#editEventoTipo').value;
-                const novoTexto = modal.querySelector('#editEventoTexto').value.trim();
-                const novaData = modal.querySelector('#editEventoData').value;
-                if (!novoTexto) return alert('Descrição obrigatória');
-                
-                const eventoCompleto = `${novoTipo} ${novoTexto}`;
-                
-                await db.collection('timeline').doc(eventId).update({
-                    texto: eventoCompleto,
-                    data: novaData
-                });
-                
-                showToast('✅ Evento atualizado!');
-                modal.remove();
-                renderUltimosEventos();
-            };
-            
-            modal.querySelector('#cancelarEventoBtn').onclick = () => modal.remove();
-        }
-        
-        function showEditVotacaoModal(votacaoId, v) {
-            const modal = document.createElement('div');
-            modal.className = 'modal-overlay';
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <h3 style="margin-bottom: 20px;">✏️ Editar Votação</h3>
-                    <input type="text" id="editVotPergunta" value="${v.pergunta.replace(/"/g, '&quot;')}" placeholder="Pergunta">
-                    <div style="margin: 5px 0 8px 0; font-size:0.8rem;">Opções (separadas por vírgula):</div>
-                    <textarea id="editVotOpcoes" placeholder="Opções">${(v.opcoes || []).join(', ')}</textarea>
-                    <div style="margin: 10px 0;">
-                        <label>
-                            <input type="checkbox" id="editVotAtiva" ${v.ativa !== false ? 'checked' : ''}> Votação Ativa
-                        </label>
-                    </div>
-                    <button id="salvarVotacaoBtn">💾 Salvar Alterações</button>
-                    <button id="cancelarVotacaoBtn" class="btn-secondary" style="margin-top:8px;">Cancelar</button>
-                </div>
-            `;
-            document.body.appendChild(modal);
-            
-            modal.querySelector('#salvarVotacaoBtn').onclick = async () => {
-                const novaPergunta = modal.querySelector('#editVotPergunta').value.trim();
-                const novasOpcoes = modal.querySelector('#editVotOpcoes').value.split(',').map(o => o.trim()).filter(o => o);
-                const novaAtiva = modal.querySelector('#editVotAtiva').checked;
-                
-                if (!novaPergunta) return alert('Pergunta obrigatória');
-                if (novasOpcoes.length === 0) return alert('Pelo menos uma opção');
-                
-                await db.collection('votacoes').doc(votacaoId).update({
-                    pergunta: novaPergunta,
-                    opcoes: novasOpcoes,
-                    ativa: novaAtiva
-                });
-                
-                showToast('✅ Votação atualizada!');
-                modal.remove();
-                renderVotacoesList();
-            };
-            
-            modal.querySelector('#cancelarVotacaoBtn').onclick = () => modal.remove();
-        }
+        let pendingPosts = [];
         
         async function initAdmin() {
+            setupSlugPreview();
+            
+            // Carregar concorrentes em tempo real
             db.collection('concorrentes').onSnapshot(snap => {
                 allContestants = [];
                 snap.forEach(doc => {
@@ -574,41 +619,72 @@
                 renderConcorrentesList();
                 renderEventoCheckboxes();
                 renderVotacaoCheckboxes();
+                updateSEOStats();
+                renderSlugsList();
             });
             
-            // Eventos em tempo real
+            // Eventos
             db.collection('timeline').orderBy('timestamp', 'desc').onSnapshot(snap => {
                 allEvents = [];
                 snap.forEach(doc => {
                     allEvents.push({ id: doc.id, ...doc.data() });
                 });
                 renderUltimosEventos();
+                renderEventosNaoPublicados();
             });
             
+            // Votações
             renderVotacoesList();
             
-            // Adicionar concorrente
+            // Pending posts (para redes sociais)
+            db.collection('pending_posts').orderBy('createdAt', 'desc').onSnapshot(snap => {
+                pendingPosts = [];
+                snap.forEach(doc => {
+                    pendingPosts.push({ id: doc.id, ...doc.data() });
+                });
+                renderEventosNaoPublicados();
+            });
+            
+            // ========== ADICIONAR CONCORRENTE COM SLUG ==========
             document.getElementById('addConcorrenteBtn').onclick = async () => {
                 const nome = document.getElementById('concNome').value.trim();
                 if (!nome) return alert('Nome obrigatório');
                 
+                const slug = await gerarSlugUnico(nome);
+                const foto = document.getElementById('concFotoUrl').value.trim();
+                
                 await db.collection('concorrentes').add({
                     nome: nome,
-                    foto: document.getElementById('concFotoUrl').value.trim() || 'https://via.placeholder.com/150',
+                    slug: slug,
+                    foto: foto || 'https://via.placeholder.com/150',
                     rivalidades: document.getElementById('concRivalidade').value.trim(),
                     bio: document.getElementById('concBio').value.trim(),
                     likes: 0,
                     teamMembers: 0,
                     createdAt: new Date()
                 });
-                showToast(`✅ ${nome} adicionado`);
+                
+                showToast(`✅ ${nome} adicionado! Slug: ${slug}`);
+                
+                // Limpar formulário
                 document.getElementById('concNome').value = '';
                 document.getElementById('concFotoUrl').value = '';
                 document.getElementById('concRivalidade').value = '';
                 document.getElementById('concBio').value = '';
+                document.getElementById('slugPreview').style.display = 'none';
+                
+                // Adicionar à fila de publicações (opcional)
+                await db.collection('pending_posts').add({
+                    type: 'concorrente',
+                    content: `🚪 Nova entrada: ${nome} no Secret Story Desafio Final! Apoia já com like e junta-te à team.`,
+                    imageUrl: foto,
+                    concorrenteId: null, // será atualizado
+                    published: false,
+                    createdAt: new Date()
+                });
             };
             
-            // Adicionar evento
+            // ========== ADICIONAR EVENTO ==========
             document.getElementById('addEventoBtn').onclick = async () => {
                 const tipo = document.getElementById('eventoTipo').value;
                 const texto = document.getElementById('eventoTexto').value.trim();
@@ -636,7 +712,7 @@
                 document.querySelectorAll('#eventoConcorrentesCheckbox input:checked').forEach(cb => cb.checked = false);
             };
             
-            // Criar votação
+            // ========== CRIAR VOTAÇÃO ==========
             document.getElementById('criarVotacaoBtn').onclick = async () => {
                 const pergunta = document.getElementById('votPergunta').value.trim();
                 if (!pergunta) return alert('Pergunta obrigatória');
@@ -666,6 +742,50 @@
                 document.querySelectorAll('#votOpcoesCheckbox input:checked').forEach(cb => cb.checked = false);
                 renderVotacoesList();
             };
+            
+            // ========== GERAR SITEMAP ==========
+            document.getElementById('generateSitemapBtn').onclick = () => {
+                generateSitemap();
+            };
+            
+            // ========== COPIAR ROBOTS.TXT ==========
+            document.getElementById('copyRobotsBtn').onclick = () => {
+                const robots = `User-agent: *\nAllow: /\nSitemap: https://${window.location.hostname}/sitemap.xml`;
+                navigator.clipboard.writeText(robots);
+                showToast('📋 robots.txt copiado!');
+            };
+            
+            // ========== PUBLICAR NAS REDES ==========
+            document.getElementById('publishNowBtn').onclick = async () => {
+                const pendingSnap = await db.collection('pending_posts')
+                    .where('published', '==', false)
+                    .get();
+                
+                if (pendingSnap.empty) {
+                    showToast('📭 Nenhum evento pendente para publicar');
+                    return;
+                }
+                
+                const shouldPublish = confirm(`Publicar ${pendingSnap.size} evento(s) nas redes selecionadas?\n\nPodes pré-visualizar cada um antes.`);
+                if (!shouldPublish) return;
+                
+                for (const doc of pendingSnap.docs) {
+                    const post = doc.data();
+                    
+                    // Pré-visualização
+                    const preview = confirm(`📢 Publicar:\n\n"${post.content.substring(0, 100)}${post.content.length > 100 ? '...' : ''}"\n\nConfirmar publicação?`);
+                    if (!preview) continue;
+                    
+                    // Aqui podes integrar com APIs reais
+                    // Exemplo simulador:
+                    showToast(`📤 Publicado: ${post.content.substring(0, 50)}...`);
+                    
+                    await doc.ref.update({ published: true, publishedAt: new Date() });
+                }
+                
+                showToast('✅ Publicações concluídas!');
+                renderEventosNaoPublicados();
+            };
         }
         
         function renderConcorrentesList() {
@@ -677,9 +797,9 @@
             container.innerHTML = allContestants.map(c => `
                 <div class="list-item">
                     <div class="list-item-content">
-                        <strong>${c.nome}</strong><br>
-                        <span style="font-size:0.7rem;">❤️ ${c.likes||0} | 👥 ${c.teamMembers||0}</span>
-                        ${c.rivalidades ? `<br><span style="font-size:0.65rem;">⚔️ ${c.rivalidades}</span>` : ''}
+                        <strong>${escapeHtml(c.nome)}</strong><br>
+                        <span style="font-size:0.7rem;">🔗 ${c.slug || 'sem slug'} | ❤️ ${c.likes||0} | 👥 ${c.teamMembers||0}</span>
+                        ${c.rivalidades ? `<br><span style="font-size:0.65rem;">⚔️ ${escapeHtml(c.rivalidades)}</span>` : ''}
                     </div>
                     <div class="list-item-actions">
                         <button onclick="window.editarConcorrente('${c.id}')" class="btn-small btn-edit">✏️ Editar</button>
@@ -694,17 +814,21 @@
             if (c) showEditModal(c);
         };
         
-        function showEditModal(c) {
+        async function showEditModal(c) {
             const modal = document.createElement('div');
             modal.className = 'modal-overlay';
             modal.innerHTML = `
                 <div class="modal-content">
-                    <h3 style="margin-bottom: 20px;">✏️ Editar ${c.nome}</h3>
-                    <input type="text" id="editNome" value="${c.nome.replace(/"/g, '&quot;')}" placeholder="Nome">
+                    <h3 style="margin-bottom: 20px;">✏️ Editar ${escapeHtml(c.nome)}</h3>
+                    <input type="text" id="editNome" value="${escapeHtml(c.nome)}" placeholder="Nome">
+                    <div class="slug-preview" style="margin-bottom: 12px;">
+                        <i class="fas fa-link"></i> <span id="editSlugPreview">${c.slug || ''}</span>
+                    </div>
+                    <input type="text" id="editSlug" value="${c.slug || ''}" placeholder="Slug (URL amigável)">
                     <input type="text" id="editFotoUrl" value="${c.foto || ''}" placeholder="URL da foto">
                     ${c.foto ? `<img src="${c.foto}" class="photo-preview" id="editFotoPreview" onerror="this.style.display='none'">` : ''}
-                    <input type="text" id="editRivalidade" value="${c.rivalidades || ''}" placeholder="Rivalidade">
-                    <textarea id="editBio" placeholder="Bio">${c.bio || ''}</textarea>
+                    <input type="text" id="editRivalidade" value="${escapeHtml(c.rivalidades || '')}" placeholder="Rivalidade">
+                    <textarea id="editBio" placeholder="Bio">${escapeHtml(c.bio || '')}</textarea>
                     <div style="display: flex; gap: 12px; margin-top: 16px;">
                         <button id="salvarEditBtn" style="flex:1;">💾 Salvar</button>
                         <button id="cancelarEditBtn" class="btn-secondary" style="flex:1;">Cancelar</button>
@@ -723,16 +847,32 @@
             
             modal.querySelector('#salvarEditBtn').onclick = async () => {
                 const novoNome = modal.querySelector('#editNome').value.trim();
+                let novoSlug = modal.querySelector('#editSlug').value.trim();
+                
                 if (!novoNome) return alert('Nome obrigatório');
+                
+                if (!novoSlug) {
+                    novoSlug = gerarSlug(novoNome);
+                } else {
+                    novoSlug = gerarSlug(novoSlug);
+                }
+                
+                // Verificar se slug já existe (excluindo este)
+                const exists = await slugExists(novoSlug, c.id);
+                if (exists) {
+                    alert(`Slug "${novoSlug}" já existe! Usa outro.`);
+                    return;
+                }
                 
                 await db.collection('concorrentes').doc(c.id).update({
                     nome: novoNome,
+                    slug: novoSlug,
                     foto: modal.querySelector('#editFotoUrl').value.trim(),
                     rivalidades: modal.querySelector('#editRivalidade').value,
                     bio: modal.querySelector('#editBio').value
                 });
                 
-                showToast(`✅ ${c.nome} atualizado!`);
+                showToast(`✅ ${c.nome} atualizado! Slug: ${novoSlug}`);
                 modal.remove();
             };
             
@@ -740,11 +880,66 @@
         }
         
         window.removerConcorrente = async (id) => {
-            if (confirm('Remover concorrente? Stats serão perdidas.')) {
+            if (confirm('Remover concorrente? Todas as stats serão perdidas.')) {
                 await db.collection('concorrentes').doc(id).delete();
                 showToast('🗑️ Removido');
             }
         };
+        
+        function updateSEOStats() {
+            document.getElementById('seoConcorrentes').innerText = allContestants.length;
+            const withSlug = allContestants.filter(c => c.slug && c.slug.length > 0).length;
+            document.getElementById('seoSlugs').innerText = withSlug;
+            document.getElementById('seoPages').innerText = withSlug; // páginas SEO geradas
+        }
+        
+        function renderSlugsList() {
+            const container = document.getElementById('slugsList');
+            if (allContestants.length === 0) {
+                container.innerHTML = '<div style="opacity:0.6;">Nenhum concorrente</div>';
+                return;
+            }
+            container.innerHTML = allContestants.map(c => `
+                <div class="list-item" style="padding: 8px;">
+                    <div style="flex:1;">
+                        <strong>${escapeHtml(c.nome)}</strong><br>
+                        <code style="font-size:0.65rem;">/concorrente/${c.slug || 'sem-slug'}</code>
+                    </div>
+                    <button onclick="window.copySlug('${c.slug}')" class="btn-small" style="width: auto; background:#3b82f6;">📋</button>
+                </div>
+            `).join('');
+        }
+        
+        window.copySlug = (slug) => {
+            if (slug) {
+                navigator.clipboard.writeText(`/concorrente/${slug}`);
+                showToast('🔗 Slug copiado!');
+            }
+        };
+        
+        function generateSitemap() {
+            const baseUrl = `https://${window.location.hostname}`;
+            let sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+            sitemap += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+            sitemap += `    <url><loc>${baseUrl}/</loc><priority>1.0</priority></url>\n`;
+            
+            allContestants.forEach(c => {
+                if (c.slug) {
+                    sitemap += `    <url><loc>${baseUrl}/concorrente/${c.slug}</loc><priority>0.8</priority></url>\n`;
+                }
+            });
+            
+            sitemap += `</urlset>`;
+            
+            const preview = document.getElementById('sitemapPreview');
+            preview.innerHTML = `<code style="font-size:0.65rem; word-break:break-all;">${escapeHtml(sitemap.substring(0, 300))}${sitemap.length > 300 ? '...' : ''}</code>`;
+            showToast('📄 Sitemap gerado! Copia o conteúdo para o ficheiro sitemap.xml');
+            
+            // Opcional: copiar para clipboard
+            navigator.clipboard.writeText(sitemap).then(() => {
+                showToast('📋 Sitemap copiado para a clipboard!');
+            });
+        }
         
         function renderEventoCheckboxes() {
             const container = document.getElementById('eventoConcorrentesCheckbox');
@@ -754,7 +949,7 @@
             }
             container.innerHTML = allContestants.map(c => `
                 <label>
-                    <input type="checkbox" value="${c.nome.replace(/"/g, '&quot;')}"> ${c.nome}
+                    <input type="checkbox" value="${escapeHtml(c.nome)}"> ${escapeHtml(c.nome)}
                 </label>
             `).join('');
         }
@@ -767,7 +962,7 @@
             }
             container.innerHTML = allContestants.map(c => `
                 <label>
-                    <input type="checkbox" value="${c.nome.replace(/"/g, '&quot;')}"> ${c.nome}
+                    <input type="checkbox" value="${escapeHtml(c.nome)}"> ${escapeHtml(c.nome)}
                 </label>
             `).join('');
         }
@@ -784,10 +979,9 @@
                 html += `
                     <div class="list-item">
                         <div class="list-item-content">
-                            <strong>${data}</strong> ${ev.texto}
+                            <strong>${data}</strong> ${escapeHtml(ev.texto)}
                         </div>
                         <div class="list-item-actions">
-                            <button onclick="window.editarEvento('${ev.id}')" class="btn-small btn-edit">✏️ Editar</button>
                             <button onclick="window.removerEvento('${ev.id}')" class="btn-small btn-danger">🗑️</button>
                         </div>
                     </div>
@@ -796,9 +990,47 @@
             container.innerHTML = html;
         }
         
-        window.editarEvento = (id) => {
-            const ev = allEvents.find(e => e.id === id);
-            if (ev) showEditEventModal(id, ev);
+        function renderEventosNaoPublicados() {
+            const container = document.getElementById('eventosNaoPublicados');
+            const naoPublicados = pendingPosts.filter(p => !p.published);
+            
+            if (naoPublicados.length === 0) {
+                container.innerHTML = '<div style="opacity:0.6; text-align:center;">📭 Sem eventos pendentes</div>';
+                return;
+            }
+            
+            container.innerHTML = naoPublicados.slice(0, 10).map(p => `
+                <div class="list-item" style="padding: 8px;">
+                    <div class="list-item-content" style="font-size:0.75rem;">
+                        ${escapeHtml(p.content.substring(0, 80))}${p.content.length > 80 ? '...' : ''}
+                    </div>
+                    <div class="list-item-actions">
+                        <button onclick="window.publicarAgora('${p.id}')" class="btn-small btn-success">📢 Publicar</button>
+                        <button onclick="window.ignorarPublicacao('${p.id}')" class="btn-small btn-secondary">Ignorar</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        window.publicarAgora = async (id) => {
+            const post = pendingPosts.find(p => p.id === id);
+            if (!post) return;
+            
+            const confirmar = confirm(`Publicar:\n\n"${post.content}"\n\nConfirmar?`);
+            if (confirmar) {
+                await db.collection('pending_posts').doc(id).update({
+                    published: true,
+                    publishedAt: new Date()
+                });
+                showToast('✅ Publicado!');
+                renderEventosNaoPublicados();
+            }
+        };
+        
+        window.ignorarPublicacao = async (id) => {
+            await db.collection('pending_posts').doc(id).delete();
+            showToast('🗑️ Evento ignorado');
+            renderEventosNaoPublicados();
         };
         
         window.removerEvento = async (id) => {
@@ -822,11 +1054,10 @@
                 html += `
                     <div class="list-item">
                         <div class="list-item-content">
-                            <strong>${v.pergunta.substring(0, 40)}</strong><br>
-                            <span style="font-size:0.7rem;">${status} | Opções: ${(v.opcoes || []).length}</span>
+                            <strong>${escapeHtml(v.pergunta.substring(0, 40))}</strong><br>
+                            <span style="font-size:0.7rem;">${status}</span>
                         </div>
                         <div class="list-item-actions">
-                            <button onclick="window.editarVotacao('${doc.id}')" class="btn-small btn-edit">✏️ Editar</button>
                             ${v.ativa !== false ? `<button onclick="window.fecharVotacao('${doc.id}')" class="btn-small" style="background:#f59e0b;">🔒 Fechar</button>` : ''}
                             <button onclick="window.eliminarVotacao('${doc.id}')" class="btn-small btn-danger">🗑️</button>
                         </div>
@@ -836,12 +1067,6 @@
             container.innerHTML = html;
         }
         
-        window.editarVotacao = (id) => {
-            db.collection('votacoes').doc(id).get().then(doc => {
-                if (doc.exists) showEditVotacaoModal(id, doc.data());
-            });
-        };
-        
         window.fecharVotacao = async (id) => {
             await db.collection('votacoes').doc(id).update({ ativa: false });
             showToast('🔒 Votação fechada');
@@ -850,7 +1075,6 @@
         
         window.eliminarVotacao = async (id) => {
             if (confirm('Eliminar votação? Os votos serão perdidos.')) {
-                // Opcional: apagar também subcoleção de votos
                 const votosSnap = await db.collection('votacoes').doc(id).collection('votos').get();
                 votosSnap.forEach(votoDoc => votoDoc.ref.delete());
                 await db.collection('votacoes').doc(id).delete();
@@ -858,6 +1082,13 @@
                 renderVotacoesList();
             }
         };
+        
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
         
         function initTabs() {
             document.querySelectorAll('.menu-item').forEach(tab => {
@@ -870,6 +1101,12 @@
                 });
             });
         }
+        
+        // Inicializar robots.txt preview
+        const robotsContent = `User-agent: *
+Allow: /
+Sitemap: https://${window.location.hostname}/sitemap.xml`;
+        document.getElementById('robotsPreview').innerHTML = `<code style="font-size:0.65rem;">${escapeHtml(robotsContent)}</code>`;
         
         initTabs();
     </script>
