@@ -544,6 +544,7 @@
         </div>
     </div>
     
+    <!-- Menu fixo existente (não mexer) -->
     <div class="bottom-menu">
         <button class="menu-item active" data-tab="home"><i class="fas fa-home"></i><span>Início</span></button>
         <button class="menu-item" data-tab="concorrentes"><i class="fas fa-users"></i><span>Concorrentes</span></button>
@@ -551,6 +552,29 @@
         <button class="menu-item" data-tab="ranking"><i class="fas fa-trophy"></i><span>Ranking</span></button>
         <button class="menu-item" data-tab="chat"><i class="fas fa-comment"></i><span>Chat</span></button>
     </div>
+
+    <!-- Botão flutuante de partilha (já existe) -->
+    <button class="fab-share" id="fabShare"><i class="fas fa-share-alt"></i></button>
+
+    <!-- ===== NOVO RODAPÉ LEGAL (não fixo, no final da página) ===== -->
+    <div style="text-align: center; padding: 20px 16px 30px; border-top: 1px solid rgba(0,0,0,0.06); margin-top: 30px; background: transparent;">
+        <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; font-size: 0.7rem;">
+            <a href="privacy.html" style="color: #888; text-decoration: none;">
+                <i class="fas fa-shield-alt"></i> Política de Privacidade
+            </a>
+            <a href="contacto.html" style="color: #888; text-decoration: none;">
+                <i class="fas fa-envelope"></i> Contacto
+            </a>
+            <a href="sobre.html" style="color: #888; text-decoration: none;">
+                <i class="fas fa-info-circle"></i> Sobre
+            </a>
+        </div>
+        <p style="font-size: 0.6rem; color: #aaa; margin-top: 12px;">
+            © 2026 Secret Story • Desafio Final • Projeto de fãs • Não oficial
+        </p>
+    </div>
+
+    
     
     <button class="fab-share" id="fabShare"><i class="fas fa-share-alt"></i></button>
     
@@ -1010,6 +1034,49 @@
                 .then(reg => console.log('✅ Service Worker registado'))
                 .catch(err => console.error('❌ Erro:', err));
         }
+    </script>
+    
+        <!-- Cookie Consent Banner (RGPD) -->
+    <div id="cookieBanner" style="position: fixed; bottom: 0; left: 0; right: 0; background: #1a1a2e; color: white; padding: 16px; z-index: 1000; text-align: center; font-size: 0.85rem; border-top: 3px solid #ff69b4; display: none;">
+        <div style="max-width: 600px; margin: 0 auto;">
+            <p style="margin-bottom: 12px;">
+                🍪 Utilizamos cookies para melhorar a sua experiência, personalizar anúncios e analisar tráfego.
+                <a href="privacy.html" style="color: #ff69b4; text-decoration: underline;">Saber mais</a>
+            </p>
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button id="acceptCookiesBtn" style="background: #ff69b4; border: none; color: white; padding: 8px 20px; border-radius: 40px; cursor: pointer; font-weight: bold;">✅ Aceitar</button>
+                <button id="rejectCookiesBtn" style="background: #444; border: none; color: white; padding: 8px 20px; border-radius: 40px; cursor: pointer;">❌ Recusar</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Verificar se o utilizador já escolheu
+        const cookieChoice = localStorage.getItem('cookieConsent');
+        const banner = document.getElementById('cookieBanner');
+        
+        if (!cookieChoice) {
+            banner.style.display = 'block';
+        }
+        
+        function acceptCookies() {
+            localStorage.setItem('cookieConsent', 'accepted');
+            banner.style.display = 'none';
+            // Ativar Google Analytics aqui (se tiveres)
+            // Ativar anúncios personalizados aqui
+            console.log('🍪 Cookies aceites');
+        }
+        
+        function rejectCookies() {
+            localStorage.setItem('cookieConsent', 'rejected');
+            banner.style.display = 'none';
+            // Desativar anúncios personalizados
+            // Desativar analytics
+            console.log('🍪 Cookies recusados');
+        }
+        
+        document.getElementById('acceptCookiesBtn').addEventListener('click', acceptCookies);
+        document.getElementById('rejectCookiesBtn').addEventListener('click', rejectCookies);
     </script>
 </body>
 </html>
