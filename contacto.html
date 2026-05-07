@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#ff69b4">
+    <meta name="robots" content="index, follow">
+    <title>Contacto • Secret Story</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #fdf2f8 0%, #f3e8ff 50%, #e0f2fe 100%);
+            color: #1a1a2e;
+            padding-bottom: 80px;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #ff69b4 0%, #9b2dff 50%, #3b82f6 100%);
+            padding: 20px 16px;
+            border-radius: 0 0 32px 32px;
+        }
+        
+        .gradient-bg h1 { color: white; font-size: 1.6rem; margin-bottom: 4px; }
+        .gradient-bg p { color: rgba(255,255,255,0.85); font-size: 0.8rem; }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px 16px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 28px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        
+        .card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 16px;
+            color: #ff69b4;
+            border-left: 4px solid #ff69b4;
+            padding-left: 12px;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+            color: #333;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: border 0.2s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #ff69b4;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #ff69b4, #9b2dff);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+            transition: transform 0.1s;
+        }
+        
+        button:active { transform: scale(0.97); }
+        
+        .info-card {
+            background: #f8f9fa;
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        
+        .info-card i {
+            font-size: 1.5rem;
+            color: #ff69b4;
+            margin-bottom: 8px;
+        }
+        
+        .info-card a {
+            color: #ff69b4;
+            text-decoration: none;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            display: none;
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            display: none;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            background: linear-gradient(135deg, #ff69b4, #9b2dff);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.1s;
+        }
+        
+        .back-link:active { transform: scale(0.96); }
+        
+        .bottom-menu {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 16px;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            z-index: 100;
+        }
+        
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            font-size: 0.65rem;
+            color: #888;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 30px;
+            text-decoration: none;
+        }
+        
+        .menu-item i { font-size: 1.3rem; }
+        .menu-item.active { color: #ff69b4; background: rgba(255, 105, 180, 0.1); }
+        
+        .required:after {
+            content: " *";
+            color: #ff69b4;
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-bg">
+        <h1><i class="fas fa-envelope"></i> Contacto</h1>
+        <p>Secret Story • Desafio Final</p>
+    </div>
+    
+    <div class="container">
+        <div class="card">
+            <h2>📬 Envie-nos uma Mensagem</h2>
+            
+            <div id="successMessage" class="success-message">
+                <i class="fas fa-check-circle"></i> Mensagem enviada com sucesso! Responderemos em breve.
+            </div>
+            <div id="errorMessage" class="error-message">
+                <i class="fas fa-exclamation-triangle"></i> Ocorreu um erro. Tente novamente ou envie diretamente para <!-- contato@seudominio.com  -->
+            </div>
+            
+            <form id="contactForm">
+                <div class="form-group">
+                    <label class="required">Nome</label>
+                    <input type="text" id="nome" required placeholder="O seu nome">
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Email</label>
+                    <input type="email" id="email" required placeholder="seu@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label>Assunto</label>
+                    <select id="assunto">
+                        <option value="Dúvida sobre a app">Dúvida sobre a app</option>
+                        <option value="Reportar problema técnico">Reportar problema técnico</option>
+                        <option value="Sugestão">Sugestão de funcionalidade</option>
+                        <option value="Direitos de autor / DMCA">Direitos de autor / DMCA</option>
+                        <option value="Remoção de dados (RGPD)">Remoção de dados (RGPD)</option>
+                        <option value="Outro">Outro assunto</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Mensagem</label>
+                    <textarea id="mensagem" required placeholder="Escreva a sua mensagem aqui..."></textarea>
+                </div>
+                
+                <button type="submit"><i class="fas fa-paper-plane"></i> Enviar Mensagem</button>
+            </form>
+            
+            <p style="font-size:0.7rem; color:#999; margin-top:16px; text-align:center;">
+                <i class="fas fa-lock"></i> A sua mensagem é tratada com confidencialidade.
+            </p>
+        </div>
+        
+<!--        <div class="card">-->
+<!--            <h2>📞 Outros Contactos</h2>-->
+<!--            -->
+<!--            <div class="info-card">-->
+<!--                <i class="fas fa-envelope"></i>-->
+<!--                <p><strong>Email direto:</strong><br>-->
+<!--                <a href="mailto:contato@seudominio.com">contato@seudominio.com</a></p>-->
+<!--            </div>-->
+<!--            -->
+<!--            <div class="info-card">-->
+<!--               <i class="fab fa-instagram"></i>-->
+<!--                <p><strong>Instagram:</strong><br>-->
+<!--                <a href="https://instagram.com/seudominio" target="_blank">@seudominio</a></p>-->
+<!--            </div>-->
+<!--            -->
+<!--            <div class="info-card">-->
+<!--                <i class="fab fa-twitter"></i>-->
+<!--                <p><strong>X (Twitter):</strong><br>-->
+<!--                <a href="https://twitter.com/seudominio" target="_blank">@seudominio</a></p>-->
+<!--            </div>-->
+<!--        </div>-->
+        
+<!--         <div class="card">
+            <h2>⏱️ Tempo de Resposta</h2>
+            <p>Comprometemo-nos a responder à sua mensagem no prazo máximo de <strong>48 horas úteis</strong>.</p>
+            <p>Para assuntos relacionados com a remoção de dados pessoais (RGPD), respondemos em até <strong>24 horas</strong>.</p>
+        </div> -->
+        
+        <div style="text-align: center;">
+            <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Voltar à App</a>
+        </div>
+    </div>
+    
+    <div class="bottom-menu">
+        <a href="index.html" class="menu-item">
+            <i class="fas fa-home"></i><span>Início</span>
+        </a>
+        <a href="privacy.html" class="menu-item">
+            <i class="fas fa-shield-alt"></i><span>Privacidade</span>
+        </a>
+        <a href="contacto.html" class="menu-item active">
+            <i class="fas fa-envelope"></i><span>Contacto</span>
+        </a>
+    </div>
+    
+    <script>
+        // Firebase config (mesma da tua app)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDhLsFf02lCuSB1i6Wd-Jb-c28KcGVNDro",
+            authDomain: "tvi-reality-b2cf7.firebaseapp.com",
+            projectId: "tvi-reality-b2cf7",
+            storageBucket: "tvi-reality-b2cf7.firebasestorage.app",
+            messagingSenderId: "956824114157",
+            appId: "1:956824114157:web:5205bcb8140875efeacde4",
+        };
+        
+        // Importar Firebase apenas se não estiver já carregado
+        if (typeof firebase === 'undefined') {
+            const script = document.createElement('script');
+            script.src = 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js';
+            script.onload = () => {
+                const script2 = document.createElement('script');
+                script2.src = 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js';
+                script2.onload = () => {
+                    firebase.initializeApp(firebaseConfig);
+                    window.db = firebase.firestore();
+                    initForm();
+                };
+                document.head.appendChild(script2);
+            };
+            document.head.appendChild(script);
+        } else {
+            if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+            window.db = firebase.firestore();
+            initForm();
+        }
+        
+        function initForm() {
+            const form = document.getElementById('contactForm');
+            const successDiv = document.getElementById('successMessage');
+            const errorDiv = document.getElementById('errorMessage');
+            
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const nome = document.getElementById('nome').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const assunto = document.getElementById('assunto').value;
+                const mensagem = document.getElementById('mensagem').value.trim();
+                
+                if (!nome || !email || !mensagem) {
+                    alert('Por favor preencha todos os campos obrigatórios.');
+                    return;
+                }
+                
+                if (!email.includes('@')) {
+                    alert('Por favor insira um email válido.');
+                    return;
+                }
+                
+                // Desabilitar botão durante envio
+                const submitBtn = form.querySelector('button');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> A enviar...';
+                submitBtn.disabled = true;
+                
+                try {
+                    // Guardar no Firestore (coleção 'contactos')
+                    await db.collection('contactos').add({
+                        nome: nome,
+                        email: email,
+                        assunto: assunto,
+                        mensagem: mensagem,
+                        data: new Date(),
+                        lida: false,
+                        ip: 'recolhido pelo servidor'
+                    });
+                    
+                    // Opcional: enviar email via Webhook (Formspree, EmailJS, etc)
+                    // Exemplo com Formspree gratuito (substituir pelo teu ID)
+                    /*
+                    await fetch('https://formspree.io/f/SEU_ID', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ nome, email, assunto, mensagem })
+                    });
+                    */
+                    
+                    successDiv.style.display = 'block';
+                    errorDiv.style.display = 'none';
+                    form.reset();
+                    
+                    setTimeout(() => {
+                        successDiv.style.display = 'none';
+                    }, 5000);
+                    
+                } catch (err) {
+                    console.error('Erro ao enviar:', err);
+                    errorDiv.style.display = 'block';
+                    setTimeout(() => {
+                        errorDiv.style.display = 'none';
+                    }, 5000);
+                } finally {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
