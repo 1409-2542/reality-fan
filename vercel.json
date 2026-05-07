@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/concorrente/:slug",
+      "destination": "/index.html"
+    }
+  ]
+}
