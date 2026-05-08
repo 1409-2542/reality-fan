@@ -2,7 +2,7 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Admin • Secret Story</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -20,17 +20,17 @@
             background: linear-gradient(135deg, #ff69b4, #9b2dff, #3b82f6);
             padding: 20px 16px;
             border-radius: 0 0 28px 28px;
+            color: white;
             position: sticky;
             top: 0;
             z-index: 100;
-            color: white;
         }
         
         .header h1 { font-size: 1.3rem; }
         .header p { font-size: 0.7rem; opacity: 0.9; }
         
         .container {
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
             padding: 16px;
         }
@@ -107,9 +107,10 @@
         .btn-edit { background: #3b82f6; }
         .btn-danger { background: #ef4444; }
         .btn-success { background: #10b981; }
+        .btn-warning { background: #f59e0b; }
         
         .item-list {
-            max-height: 350px;
+            max-height: 400px;
             overflow-y: auto;
             margin-top: 12px;
         }
@@ -122,8 +123,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid #eee;
             flex-wrap: wrap;
+            gap: 8px;
+            cursor: grab;
+        }
+        
+        .list-item.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
         }
         
         .list-item-content {
@@ -134,7 +141,16 @@
         .list-item-actions {
             display: flex;
             gap: 6px;
+            flex-wrap: wrap;
         }
+        
+        .drag-handle {
+            cursor: grab;
+            color: #999;
+            margin-right: 8px;
+        }
+        
+        .drag-handle:active { cursor: grabbing; }
         
         .bottom-menu {
             position: fixed;
@@ -180,6 +196,8 @@
             background: #f8f9fa;
             padding: 10px;
             border-radius: 16px;
+            max-height: 150px;
+            overflow-y: auto;
         }
         
         .checkbox-group label {
@@ -191,6 +209,7 @@
             padding: 6px 12px;
             border-radius: 30px;
             border: 1px solid #e0e0e0;
+            cursor: pointer;
         }
         
         .checkbox-group input {
@@ -218,10 +237,6 @@
             100% { opacity: 0; visibility: hidden; }
         }
         
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #f0f0f0; }
-        ::-webkit-scrollbar-thumb { background: #ff69b4; border-radius: 10px; }
-        
         .login-box {
             position: fixed;
             top: 0;
@@ -242,44 +257,6 @@
             width: 90%;
             max-width: 320px;
             text-align: center;
-        }
-        
-        .photo-preview {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin: 8px auto;
-            display: block;
-            border: 3px solid #ff69b4;
-        }
-        
-        .row-2cols {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-        
-        .label-hint {
-            font-size: 0.7rem;
-            color: #888;
-            margin-top: -8px;
-            margin-bottom: 12px;
-        }
-        
-        .slug-preview {
-            background: #f0f0f0;
-            padding: 8px 12px;
-            border-radius: 30px;
-            font-size: 0.8rem;
-            margin-bottom: 12px;
-            word-break: break-all;
-            font-family: monospace;
-        }
-        
-        .slug-preview i {
-            color: #ff69b4;
-            margin-right: 6px;
         }
         
         .modal-overlay {
@@ -306,6 +283,35 @@
             overflow-y: auto;
         }
         
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .status-ativo { background: #10b98120; color: #10b981; }
+        .status-expulso { background: #ef444420; color: #ef4444; }
+        .status-desistiu { background: #f59e0b20; color: #f59e0b; }
+        .status-vencedor { background: #ffd70020; color: #b8860b; }
+        
+        .slug-preview {
+            background: #f0f0f0;
+            padding: 8px 12px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            margin-bottom: 12px;
+            word-break: break-all;
+            font-family: monospace;
+        }
+        
+        .row-2cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
         .seo-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -326,20 +332,32 @@
             color: #ff69b4;
         }
         
-        .seo-stat-card .label {
-            font-size: 0.65rem;
-            color: #666;
+        .editor-toolbar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
         }
+        
+        .editor-toolbar button {
+            width: auto;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .editor-toolbar button:hover { background: #e0e0e0; }
     </style>
 </head>
 <body>
     <div class="header">
         <h1><i class="fas fa-mobile-alt"></i> Admin • Secret Story</h1>
-        <p>Controlo ao vivo durante a gala • SEO ready</p>
+        <p>Gestão completa em tempo real • SEO ready</p>
     </div>
     
     <div class="container">
-        <!-- Tab: Concorrentes -->
+        <!-- TAB: CONCORRENTES -->
         <div id="tab-concorrentes" class="tab-content active">
             <div class="card">
                 <h2><i class="fas fa-user-plus"></i> Adicionar Concorrente</h2>
@@ -348,7 +366,6 @@
                     <i class="fas fa-link"></i> <span id="slugPreviewText"></span>
                 </div>
                 <input type="text" id="concFotoUrl" placeholder="URL da foto (ex: https://...)">
-                <div class="label-hint">💡 Podes usar foto do Instagram ou Google Imagens</div>
                 <input type="text" id="concRivalidade" placeholder="Rivalidade (ex: Rival: Ana)">
                 <textarea id="concBio" placeholder="Bio / História (opcional)"></textarea>
                 <button id="addConcorrenteBtn"><i class="fas fa-save"></i> Adicionar</button>
@@ -360,71 +377,118 @@
                     <div style="opacity:0.6; text-align:center;">A carregar...</div>
                 </div>
             </div>
-            
-            <div class="card">
-                <h2><i class="fas fa-chart-line"></i> SEO Stats</h2>
-                <div class="seo-stats" id="seoStats">
-                    <div class="seo-stat-card"><div class="number" id="seoConcorrentes">0</div><div class="label">Concorrentes</div></div>
-                    <div class="seo-stat-card"><div class="number" id="seoSlugs">0</div><div class="label">Com Slug</div></div>
-                    <div class="seo-stat-card"><div class="number" id="seoPages">0</div><div class="label">Páginas SEO</div></div>
-                </div>
-            </div>
         </div>
         
-        <!-- Tab: Timeline -->
+        <!-- TAB: TIMELINE (COMPLETA) -->
         <div id="tab-timeline" class="tab-content">
             <div class="card">
                 <h2><i class="fas fa-clock"></i> Adicionar Evento à Timeline</h2>
                 
-                <div class="row-2cols">
-                    <select id="eventoTipo">
-                        <option value="📢">📢 Geral</option>
-                        <option value="🚪">🚪 Entrada</option>
-                        <option value="🗳️">🗳️ Nomeação</option>
-                        <option value="👑">👑 Líder/Imunidade</option>
-                        <option value="❌">❌ Expulsão</option>
-                        <option value="🏆">🏆 Prova</option>
-                        <option value="😈">😈 Castigo</option>
-                        <option value="⚔️">⚔️ Desafio</option>
-                        <option value="👑⚡">👑⚡ Prova Líder</option>
-                        <option value="🎯">🎯 Missão</option>
-                        <option value="😢">😢 Desistência</option>
-                        <option value="🤫">🤫 Segredo</option>
-                    </select>
-                    <input type="date" id="eventoData" value="">
+                <div class="editor-toolbar">
+                    <button type="button" onclick="insertTag('📢')">📢 Geral</button>
+                    <button type="button" onclick="insertTag('🚪')">🚪 Entrada</button>
+                    <button type="button" onclick="insertTag('🗳️')">🗳️ Nomeação</button>
+                    <button type="button" onclick="insertTag('👑')">👑 Líder</button>
+                    <button type="button" onclick="insertTag('❌')">❌ Expulsão</button>
+                    <button type="button" onclick="insertTag('🏆')">🏆 Prova</button>
+                    <button type="button" onclick="insertTag('🛡️')">🛡️ Salvo</button>
+                    <button type="button" onclick="insertTag('😈')">😈 Castigo</button>
                 </div>
-                <input type="text" id="eventoTexto" placeholder="Descrição (ex: João foi nomeado)">
+                
+                <div class="row-2cols">
+                    <input type="date" id="eventoData" value="">
+                    <input type="time" id="eventoHora" value="">
+                </div>
+                
+                <textarea id="eventoTexto" rows="3" placeholder="Descrição do evento (ex: João nomeou Maria com 3 votos)"></textarea>
                 
                 <div style="margin: 10px 0 8px 0; font-size:0.8rem;">
-                    <i class="fas fa-tag"></i> Ligar a concorrentes (opcional):
+                    <i class="fas fa-tag"></i> Taggear concorrentes (clicar para adicionar ao texto):
                 </div>
-                <div id="eventoConcorrentesCheckbox" class="checkbox-group">
-                    <!-- checkboxes dinâmicos -->
+                <div id="eventoConcorrentesTags" class="checkbox-group">
+                    <!-- tags dinâmicas -->
                 </div>
                 
-                <button id="addEventoBtn"><i class="fas fa-plus-circle"></i> Registrar Evento</button>
+                <div style="display: flex; gap: 12px; margin-top: 8px;">
+                    <button id="addEventoBtn" style="flex:2;"><i class="fas fa-plus-circle"></i> Adicionar Evento</button>
+                </div>
             </div>
             
             <div class="card">
-                <h2><i class="fas fa-history"></i> Últimos Eventos</h2>
-                <div id="ultimosEventos" class="item-list" style="max-height: 300px;">
+                <h2><i class="fas fa-history"></i> Timeline <span style="font-size:0.65rem;">(arrasta para reordenar)</span></h2>
+                <div id="timelineList" class="item-list">
                     <div style="opacity:0.6; text-align:center;">A carregar...</div>
                 </div>
             </div>
         </div>
         
-        <!-- Tab: Votações -->
+        <!-- TAB: EVENTOS ESTRUTURADOS (Estatísticas) -->
+        <div id="tab-eventos-estruturados" class="tab-content">
+            <div class="card">
+                <h2><i class="fas fa-chart-line"></i> Registar Evento Estruturado (Estatísticas)</h2>
+                <p style="font-size:0.75rem; color:#666; margin-bottom:12px;">Estes eventos geram estatísticas automáticas e páginas SEO</p>
+                
+                <select id="estrutTipo">
+                    <option value="nomeacao">🗳️ Nomeação</option>
+                    <option value="expulsao">❌ Expulsão</option>
+                    <option value="salvo">🛡️ Salvo (não expulso)</option>
+                    <option value="imunidade">👑 Imunidade</option>
+                    <option value="entrada">🚪 Entrada</option>
+                    <option value="prova">🏆 Vitória em Prova</option>
+                    <option value="desistencia">😢 Desistência</option>
+                </select>
+                
+                <div id="estrutCamposNomeacao">
+                    <select id="estrutQuemNomeou"><option>Selecionar...</option></select>
+                    <select id="estrutAlvoNomeado"><option>Selecionar...</option></select>
+                    <input type="number" id="estrutNumVotos" placeholder="Número de votos (opcional)">
+                </div>
+                
+                <div id="estrutCamposExpulsao" style="display:none;">
+                    <select id="estrutQuemExpulso"><option>Selecionar...</option></select>
+                    <input type="number" id="estrutPercentagem" placeholder="% de votos (ex: 52)" step="0.1">
+                    <input type="number" id="estrutOrdemSaida" placeholder="Ordem de saída (1,2,3...)">
+                </div>
+                
+                <div id="estrutCamposSalvo" style="display:none;">
+                    <select id="estrutQuemSalvo"><option>Selecionar...</option></select>
+                    <input type="number" id="estrutPercentagemSalvo" placeholder="% de votos que salvou">
+                </div>
+                
+                <div id="estrutCamposImunidade" style="display:none;">
+                    <select id="estrutQuemImune"><option>Selecionar...</option></select>
+                    <input type="text" id="estrutTipoImunidade" placeholder="Tipo (ex: Líder, Anjo)">
+                </div>
+                
+                <div id="estrutCamposProva" style="display:none;">
+                    <select id="estrutQuemVenceu"><option>Selecionar...</option></select>
+                    <input type="text" id="estrutNomeProva" placeholder="Nome da prova">
+                </div>
+                
+                <button id="addEventoEstruturadoBtn" style="margin-top:12px;"><i class="fas fa-database"></i> Registar Estatística</button>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-chart-simple"></i> Histórico de Estatísticas</h2>
+                <div id="eventosEstruturadosList" class="item-list">
+                    <div style="opacity:0.6; text-align:center;">A carregar...</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- TAB: VOTAÇÕES -->
         <div id="tab-votacoes" class="tab-content">
             <div class="card">
                 <h2><i class="fas fa-chart-simple"></i> Criar Votação</h2>
                 <input type="text" id="votPergunta" placeholder="Pergunta (ex: Quem deve sair?)">
                 
                 <div style="margin: 5px 0 8px 0; font-size:0.8rem;">
-                    <i class="fas fa-users"></i> Opções (seleciona concorrentes ou escreve manual):
+                    <i class="fas fa-users"></i> Selecionar concorrentes como opções:
                 </div>
                 <div id="votOpcoesCheckbox" class="checkbox-group">
                     <!-- checkboxes dinâmicos -->
                 </div>
+                
                 <textarea id="votOpcoesManual" placeholder="Ou escreve opções manualmente (separadas por vírgula)"></textarea>
                 
                 <button id="criarVotacaoBtn"><i class="fas fa-vote-yea"></i> Criar Votação</button>
@@ -438,21 +502,31 @@
             </div>
         </div>
         
-        <!-- Tab: SEO Tools -->
+        <!-- TAB: SEO -->
         <div id="tab-seo" class="tab-content">
             <div class="card">
                 <h2><i class="fab fa-google"></i> Ferramentas SEO</h2>
                 
+                <div class="seo-stats" id="seoStats">
+                    <div class="seo-stat-card"><div class="number" id="seoConcorrentes">0</div><div class="label">Concorrentes</div></div>
+                    <div class="seo-stat-card"><div class="number" id="seoSlugs">0</div><div class="label">Com Slug</div></div>
+                    <div class="seo-stat-card"><div class="number" id="seoPages">0</div><div class="label">Páginas SEO</div></div>
+                </div>
+                
                 <div style="margin-bottom: 16px;">
                     <h3 style="font-size: 0.9rem; margin-bottom: 8px;">📄 Sitemap.xml</h3>
-                    <div class="slug-preview" id="sitemapPreview" style="font-size: 0.7rem;">A carregar...</div>
-                    <button id="generateSitemapBtn" class="btn-small" style="width: auto; background: #10b981;">🔁 Gerar Sitemap</button>
+                    <button id="generateSitemapBtn" class="btn-small btn-success" style="width: auto;">🔁 Gerar e Copiar Sitemap</button>
                 </div>
                 
                 <div style="margin-bottom: 16px;">
                     <h3 style="font-size: 0.9rem; margin-bottom: 8px;">🤖 robots.txt</h3>
-                    <div class="slug-preview" id="robotsPreview" style="font-size: 0.7rem;">A carregar...</div>
-                    <button id="copyRobotsBtn" class="btn-small" style="width: auto; background: #3b82f6;">📋 Copiar</button>
+                    <button id="copyRobotsBtn" class="btn-small" style="width: auto; background:#3b82f6;">📋 Copiar robots.txt</button>
+                </div>
+                
+                <div style="margin-bottom: 16px;">
+                    <h3 style="font-size: 0.9rem; margin-bottom: 8px;">📄 Gerar Páginas SEO (Quem é X? / X foi expulso?)</h3>
+                    <button id="generateSEOPagesBtn" class="btn-small btn-success" style="width: auto;">🚀 Gerar Páginas SEO</button>
+                    <p style="font-size:0.7rem; color:#666; margin-top:8px;">Cria páginas como /quem-e/marisa e /marisa-foi-expulso</p>
                 </div>
                 
                 <div>
@@ -461,22 +535,6 @@
                         <div style="opacity:0.6;">A carregar...</div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="card">
-                <h2><i class="fas fa-share-alt"></i> Publicar nas Redes Sociais</h2>
-                <div id="eventosNaoPublicados" class="item-list" style="max-height: 200px;">
-                    <div style="opacity:0.6;">A carregar eventos...</div>
-                </div>
-                
-                <div class="checkbox-group" style="margin-top: 12px;">
-                    <label><input type="checkbox" id="autoPostFacebook"> 📘 Facebook</label>
-                    <label><input type="checkbox" id="autoPostTwitter"> 🐦 X (Twitter)</label>
-                    <label><input type="checkbox" id="autoPostInstagram"> 📷 Instagram</label>
-                </div>
-                
-                <button id="publishNowBtn" class="btn-success" style="margin-top: 8px;">📢 Publicar Selecionados</button>
-                <div class="label-hint">⚠️ Cada publicação é pré-visualizada antes de enviar</div>
             </div>
         </div>
     </div>
@@ -488,6 +546,9 @@
         <button class="menu-item" data-tab="timeline">
             <i class="fas fa-clock"></i><span>Timeline</span>
         </button>
+        <button class="menu-item" data-tab="eventos-estruturados">
+            <i class="fas fa-chart-line"></i><span>Stats</span>
+        </button>
         <button class="menu-item" data-tab="votacoes">
             <i class="fas fa-chart-simple"></i><span>Votações</span>
         </button>
@@ -496,19 +557,19 @@
         </button>
     </div>
 
-    
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     
     <script>
+        // ========== CONFIGURAÇÃO ==========
         const firebaseConfig = {
             apiKey: "AIzaSyDhLsFf02lCuSB1i6Wd-Jb-c28KcGVNDro",
             authDomain: "tvi-reality-b2cf7.firebaseapp.com",
             projectId: "tvi-reality-b2cf7",
             storageBucket: "tvi-reality-b2cf7.firebasestorage.app",
             messagingSenderId: "956824114157",
-            appId: "1:956824114157:web:5205bcb8140875efeacde4",
+            appId: "1:956824114157:web:5205bcb8140875efeacde4"
         };
         
         firebase.initializeApp(firebaseConfig);
@@ -517,8 +578,7 @@
         
         const SENHA_ADMIN = "secret2025";
         
-        document.getElementById('eventoData').value = new Date().toISOString().split('T')[0];
-        
+        // Verificar autenticação
         if (localStorage.getItem('admin_auth') !== 'true') {
             showLogin();
         } else {
@@ -556,37 +616,50 @@
             setTimeout(() => toast.remove(), 2000);
         }
         
-        // ========== FUNÇÃO PRINCIPAL: GERAR SLUG ==========
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
         function gerarSlug(nome) {
             return nome
                 .toLowerCase()
-                .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // remove acentos
-                .replace(/[^a-z0-9]+/g, '-') // substitui espaços/caracteres especiais por -
-                .replace(/^-|-$/g, ''); // remove traços no início/fim
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-|-$/g, '');
         }
         
-        // Verificar se slug já existe
-        async function slugExists(slug, excludeId = null) {
-            const snapshot = await db.collection('concorrentes').where('slug', '==', slug).get();
-            if (snapshot.empty) return false;
-            if (excludeId && snapshot.docs[0].id === excludeId) return false;
-            return true;
-        }
+        // ========== VARIÁVEIS GLOBAIS ==========
+        let allContestants = [];
+        let allTimelineEvents = [];
+        let draggedItem = null;
         
-        // Gerar slug único
-        async function gerarSlugUnico(nome, excludeId = null) {
-            let slug = gerarSlug(nome);
-            let slugFinal = slug;
-            let counter = 1;
-            
-            while (await slugExists(slugFinal, excludeId)) {
-                slugFinal = `${slug}-${counter}`;
-                counter++;
-            }
-            return slugFinal;
-        }
+        // ========== FUNÇÃO PARA INSERIR TAG NO TEXTO ==========
+        window.insertTag = (tag) => {
+            const textarea = document.getElementById('eventoTexto');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            const newText = text.substring(0, start) + tag + ' ' + text.substring(end);
+            textarea.value = newText;
+            textarea.focus();
+            textarea.setSelectionRange(start + tag.length + 1, start + tag.length + 1);
+        };
         
-        // Previsualização do slug em tempo real
+        window.insertConcorrenteTag = (nome) => {
+            const textarea = document.getElementById('eventoTexto');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            const newText = text.substring(0, start) + '@' + nome + text.substring(end);
+            textarea.value = newText;
+            textarea.focus();
+            textarea.setSelectionRange(start + nome.length + 1, start + nome.length + 1);
+        };
+        
+        // ========== GERAR SLUG PREVIEW ==========
         function setupSlugPreview() {
             const nomeInput = document.getElementById('concNome');
             const slugPreview = document.getElementById('slugPreview');
@@ -595,7 +668,7 @@
             nomeInput.addEventListener('input', async () => {
                 const nome = nomeInput.value.trim();
                 if (nome) {
-                    const slug = await gerarSlugUnico(nome);
+                    const slug = gerarSlug(nome);
                     slugPreviewText.textContent = `/concorrente/${slug}`;
                     slugPreview.style.display = 'block';
                 } else {
@@ -604,54 +677,67 @@
             });
         }
         
-        let allContestants = [];
-        let allEvents = [];
-        let pendingPosts = [];
-        
+        // ========== INICIALIZAR ADMIN ==========
         async function initAdmin() {
             setupSlugPreview();
+            document.getElementById('eventoData').value = new Date().toISOString().split('T')[0];
+            document.getElementById('eventoHora').value = new Date().toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' });
             
-            // Carregar concorrentes em tempo real
+            // Listener para concorrentes
             db.collection('concorrentes').onSnapshot(snap => {
                 allContestants = [];
                 snap.forEach(doc => {
-                    allContestants.push({ id: doc.id, ...doc.data() });
+                    allContestants.push({ id: doc.id, ...doc.data(), slug: doc.data().slug || gerarSlug(doc.data().nome) });
                 });
                 renderConcorrentesList();
-                renderEventoCheckboxes();
+                renderEventoConcorrentesTags();
                 renderVotacaoCheckboxes();
                 updateSEOStats();
                 renderSlugsList();
+                updateEstruturadoSelects();
             });
             
-            // Eventos
-            db.collection('timeline').orderBy('timestamp', 'desc').onSnapshot(snap => {
-                allEvents = [];
+            // Listener para timeline (ordenado por ordem personalizada)
+            db.collection('timeline').orderBy('ordem', 'asc').onSnapshot(snap => {
+                allTimelineEvents = [];
                 snap.forEach(doc => {
-                    allEvents.push({ id: doc.id, ...doc.data() });
+                    allTimelineEvents.push({ id: doc.id, ...doc.data() });
                 });
-                renderUltimosEventos();
-                renderEventosNaoPublicados();
+                renderTimelineList();
             });
             
-            // Votações
+            // Listener para eventos estruturados
+            db.collection('eventos_estruturados').orderBy('data', 'desc').onSnapshot(snap => {
+                const container = document.getElementById('eventosEstruturadosList');
+                if (snap.empty) {
+                    container.innerHTML = '<div style="opacity:0.6; text-align:center;">Sem eventos registados</div>';
+                    return;
+                }
+                let html = '';
+                snap.forEach(doc => {
+                    const ev = doc.data();
+                    let descricao = '';
+                    if (ev.tipo === 'nomeacao') descricao = `🗳️ ${ev.quem} nomeou ${ev.alvo}`;
+                    else if (ev.tipo === 'expulsao') descricao = `❌ ${ev.quem} expulso com ${ev.percentagem}%`;
+                    else if (ev.tipo === 'salvo') descricao = `🛡️ ${ev.quem} salvo com ${ev.percentagem}%`;
+                    else if (ev.tipo === 'imunidade') descricao = `👑 ${ev.quem} - ${ev.tipo_imunidade}`;
+                    else if (ev.tipo === 'prova') descricao = `🏆 ${ev.quem} venceu ${ev.nome_prova}`;
+                    else descricao = ev.tipo;
+                    
+                    html += `<div class="list-item"><div class="list-item-content"><small>${new Date(ev.data?.toDate()).toLocaleString() || '---'}</small><br>${descricao}</div><button onclick="removerEventoEstruturado('${doc.id}')" class="btn-small btn-danger">🗑️</button></div>`;
+                });
+                container.innerHTML = html;
+            });
+            
+            // Listener para votações
             renderVotacoesList();
             
-            // Pending posts (para redes sociais)
-            db.collection('pending_posts').orderBy('createdAt', 'desc').onSnapshot(snap => {
-                pendingPosts = [];
-                snap.forEach(doc => {
-                    pendingPosts.push({ id: doc.id, ...doc.data() });
-                });
-                renderEventosNaoPublicados();
-            });
-            
-            // ========== ADICIONAR CONCORRENTE COM SLUG ==========
+            // ========== ADICIONAR CONCORRENTE ==========
             document.getElementById('addConcorrenteBtn').onclick = async () => {
                 const nome = document.getElementById('concNome').value.trim();
                 if (!nome) return alert('Nome obrigatório');
                 
-                const slug = await gerarSlugUnico(nome);
+                const slug = gerarSlug(nome);
                 const foto = document.getElementById('concFotoUrl').value.trim();
                 
                 await db.collection('concorrentes').add({
@@ -662,55 +748,103 @@
                     bio: document.getElementById('concBio').value.trim(),
                     likes: 0,
                     teamMembers: 0,
+                    status: 'ativo',
                     createdAt: new Date()
                 });
                 
                 showToast(`✅ ${nome} adicionado! Slug: ${slug}`);
-                
-                // Limpar formulário
                 document.getElementById('concNome').value = '';
                 document.getElementById('concFotoUrl').value = '';
                 document.getElementById('concRivalidade').value = '';
                 document.getElementById('concBio').value = '';
                 document.getElementById('slugPreview').style.display = 'none';
-                
-                // Adicionar à fila de publicações (opcional)
-                await db.collection('pending_posts').add({
-                    type: 'concorrente',
-                    content: `🚪 Nova entrada: ${nome} no Secret Story Desafio Final! Apoia já com like e junta-te à team.`,
-                    imageUrl: foto,
-                    concorrenteId: null, // será atualizado
-                    published: false,
-                    createdAt: new Date()
-                });
             };
             
-            // ========== ADICIONAR EVENTO ==========
+            // ========== ADICIONAR EVENTO TIMELINE ==========
             document.getElementById('addEventoBtn').onclick = async () => {
-                const tipo = document.getElementById('eventoTipo').value;
                 const texto = document.getElementById('eventoTexto').value.trim();
                 if (!texto) return alert('Descrição do evento');
                 
-                const selectedConcs = [];
-                document.querySelectorAll('#eventoConcorrentesCheckbox input:checked').forEach(cb => {
-                    selectedConcs.push(cb.value);
-                });
+                const dataCompleta = document.getElementById('eventoData').value;
+                const hora = document.getElementById('eventoHora').value;
+                const timestamp = new Date(`${dataCompleta}T${hora}:00`);
                 
-                const dataEvento = document.getElementById('eventoData').value;
-                const eventoCompleto = selectedConcs.length > 0 
-                    ? `${tipo} ${texto} (${selectedConcs.join(', ')})`
-                    : `${tipo} ${texto}`;
+                // Extrair concorrentes mencionados com @
+                const mentionedRegex = /@([a-zA-ZÀ-ÿ\s]+)/g;
+                const mentioned = [];
+                let match;
+                while ((match = mentionedRegex.exec(texto)) !== null) {
+                    mentioned.push(match[1].trim());
+                }
+                
+                const novaOrdem = allTimelineEvents.length;
                 
                 await db.collection('timeline').add({
-                    texto: eventoCompleto,
-                    data: dataEvento,
-                    concorrentesIds: selectedConcs,
-                    timestamp: new Date()
+                    texto: texto,
+                    data: dataCompleta,
+                    hora: hora,
+                    timestamp: timestamp,
+                    concorrentesMencionados: mentioned,
+                    ordem: novaOrdem,
+                    createdAt: new Date()
                 });
                 
                 showToast('📝 Evento registado!');
                 document.getElementById('eventoTexto').value = '';
-                document.querySelectorAll('#eventoConcorrentesCheckbox input:checked').forEach(cb => cb.checked = false);
+            };
+            
+            // ========== EVENTOS ESTRUTURADOS ==========
+            document.getElementById('addEventoEstruturadoBtn').onclick = async () => {
+                const tipo = document.getElementById('estrutTipo').value;
+                let evento = { tipo, data: new Date(), edicao: 'ativa' };
+                
+                if (tipo === 'nomeacao') {
+                    evento.quem = document.getElementById('estrutQuemNomeou').value;
+                    evento.alvo = document.getElementById('estrutAlvoNomeado').value;
+                    evento.num_votos = parseInt(document.getElementById('estrutNumVotos').value) || null;
+                    
+                    // Atualizar contagem de nomeações do concorrente
+                    const concSnap = await db.collection('concorrentes').where('nome', '==', evento.alvo).get();
+                    concSnap.forEach(doc => {
+                        doc.ref.update({ nomeacoes_recebidas: firebase.firestore.FieldValue.increment(1) });
+                    });
+                    
+                } else if (tipo === 'expulsao') {
+                    evento.quem = document.getElementById('estrutQuemExpulso').value;
+                    evento.percentagem = parseFloat(document.getElementById('estrutPercentagem').value);
+                    evento.ordem_saida = parseInt(document.getElementById('estrutOrdemSaida').value);
+                    
+                    // Atualizar status do concorrente
+                    const concSnap = await db.collection('concorrentes').where('nome', '==', evento.quem).get();
+                    concSnap.forEach(doc => {
+                        doc.ref.update({ 
+                            status: 'expulso', 
+                            data_saida: new Date(), 
+                            percentagem_expulsao: evento.percentagem,
+                            ordem_saida: evento.ordem_saida
+                        });
+                    });
+                    
+                } else if (tipo === 'salvo') {
+                    evento.quem = document.getElementById('estrutQuemSalvo').value;
+                    evento.percentagem = parseFloat(document.getElementById('estrutPercentagemSalvo').value);
+                    
+                } else if (tipo === 'imunidade') {
+                    evento.quem = document.getElementById('estrutQuemImune').value;
+                    evento.tipo_imunidade = document.getElementById('estrutTipoImunidade').value;
+                    
+                } else if (tipo === 'prova') {
+                    evento.quem = document.getElementById('estrutQuemVenceu').value;
+                    evento.nome_prova = document.getElementById('estrutNomeProva').value;
+                }
+                
+                await db.collection('eventos_estruturados').add(evento);
+                showToast(`✅ ${tipo} registado!`);
+                
+                // Limpar campos
+                document.getElementById('estrutNumVotos').value = '';
+                document.getElementById('estrutPercentagem').value = '';
+                document.getElementById('estrutOrdemSaida').value = '';
             };
             
             // ========== CRIAR VOTAÇÃO ==========
@@ -749,87 +883,101 @@
                 generateSitemap();
             };
             
-            // ========== COPIAR ROBOTS.TXT ==========
+            // ========== COPIAR ROBOTS ==========
             document.getElementById('copyRobotsBtn').onclick = () => {
                 const robots = `User-agent: *\nAllow: /\nSitemap: https://${window.location.hostname}/sitemap.xml`;
                 navigator.clipboard.writeText(robots);
                 showToast('📋 robots.txt copiado!');
             };
             
-            // ========== PUBLICAR NAS REDES ==========
-            document.getElementById('publishNowBtn').onclick = async () => {
-                const pendingSnap = await db.collection('pending_posts')
-                    .where('published', '==', false)
-                    .get();
-                
-                if (pendingSnap.empty) {
-                    showToast('📭 Nenhum evento pendente para publicar');
-                    return;
+            // ========== GERAR PÁGINAS SEO ==========
+            document.getElementById('generateSEOPagesBtn').onclick = async () => {
+                let count = 0;
+                for (const c of allContestants) {
+                    const slugQuemE = `quem-e-${c.slug}`;
+                    const htmlQuemE = `<!DOCTYPE html><html><head><title>Quem é ${c.nome}? Perfil completo</title><meta name="description" content="Tudo sobre ${c.nome} do Secret Story: biografia, estatísticas, likes e equipa."><meta property="og:image" content="${c.foto}"><link rel="canonical" href="https://${window.location.hostname}/concorrente/${c.slug}"><meta http-equiv="refresh" content="0; url=/concorrente/${c.slug}"></head><body><p>Redirecionando...</p></body></html>`;
+                    await db.collection('seo_pages').doc(slugQuemE).set({ html: htmlQuemE, slug: slugQuemE, createdAt: new Date() });
+                    count++;
+                    
+                    // Página "X foi expulso?" se aplicável
+                    if (c.status === 'expulso') {
+                        const slugExpulso = `${c.slug}-foi-expulso`;
+                        const htmlExpulso = `<!DOCTYPE html><html><head><title>${c.nome} foi expulso do Secret Story</title><meta name="description" content="${c.nome} foi expulso do Secret Story Desafio Final com ${c.percentagem_expulsao || ''}% dos votos."><meta http-equiv="refresh" content="0; url=/concorrente/${c.slug}"></head><body></body></html>`;
+                        await db.collection('seo_pages').doc(slugExpulso).set({ html: htmlExpulso, slug: slugExpulso, createdAt: new Date() });
+                        count++;
+                    }
                 }
-                
-                const shouldPublish = confirm(`Publicar ${pendingSnap.size} evento(s) nas redes selecionadas?\n\nPodes pré-visualizar cada um antes.`);
-                if (!shouldPublish) return;
-                
-                for (const doc of pendingSnap.docs) {
-                    const post = doc.data();
-                    
-                    // Pré-visualização
-                    const preview = confirm(`📢 Publicar:\n\n"${post.content.substring(0, 100)}${post.content.length > 100 ? '...' : ''}"\n\nConfirmar publicação?`);
-                    if (!preview) continue;
-                    
-                    // Aqui podes integrar com APIs reais
-                    // Exemplo simulador:
-                    showToast(`📤 Publicado: ${post.content.substring(0, 50)}...`);
-                    
-                    await doc.ref.update({ published: true, publishedAt: new Date() });
-                }
-                
-                showToast('✅ Publicações concluídas!');
-                renderEventosNaoPublicados();
+                showToast(`✅ ${count} páginas SEO geradas!`);
             };
         }
         
+        // ========== RENDER CONCORRENTES (com edição e status) ==========
         function renderConcorrentesList() {
             const container = document.getElementById('concorrentesList');
             if (allContestants.length === 0) {
                 container.innerHTML = '<div style="opacity:0.6; text-align:center;">Nenhum concorrente</div>';
                 return;
             }
-            container.innerHTML = allContestants.map(c => `
+            
+            container.innerHTML = allContestants.map(c => {
+                let statusClass = '';
+                let statusText = '';
+                switch(c.status) {
+                    case 'ativo': statusClass = 'status-ativo'; statusText = 'Ativo'; break;
+                    case 'expulso': statusClass = 'status-expulso'; statusText = 'Expulso'; break;
+                    case 'desistiu': statusClass = 'status-desistiu'; statusText = 'Desistiu'; break;
+                    case 'vencedor': statusClass = 'status-vencedor'; statusText = '🏆 Vencedor'; break;
+                    default: statusClass = 'status-ativo'; statusText = 'Ativo';
+                }
+                
+                return `
                 <div class="list-item">
                     <div class="list-item-content">
                         <strong>${escapeHtml(c.nome)}</strong><br>
-                        <span style="font-size:0.7rem;">🔗 ${c.slug || 'sem slug'} | ❤️ ${c.likes||0} | 👥 ${c.teamMembers||0}</span>
+                        <span style="font-size:0.7rem;">🔗 ${c.slug || 'sem slug'}</span><br>
+                        <span class="status-badge ${statusClass}">${statusText}</span>
+                        <span style="font-size:0.7rem; margin-left:8px;">❤️ ${c.likes||0} | 👥 ${c.teamMembers||0}</span>
                         ${c.rivalidades ? `<br><span style="font-size:0.65rem;">⚔️ ${escapeHtml(c.rivalidades)}</span>` : ''}
                     </div>
                     <div class="list-item-actions">
-                        <button onclick="window.editarConcorrente('${c.id}')" class="btn-small btn-edit">✏️ Editar</button>
-                        <button onclick="window.removerConcorrente('${c.id}')" class="btn-small btn-danger">🗑️</button>
+                        <button onclick="editarConcorrente('${c.id}')" class="btn-small btn-edit">✏️ Editar</button>
+                        <button onclick="alterarStatus('${c.id}', '${c.status}')" class="btn-small btn-warning">📌 Status</button>
+                        <button onclick="removerConcorrente('${c.id}')" class="btn-small btn-danger">🗑️</button>
                     </div>
-                </div>
-            `).join('');
+                </div>`;
+            }).join('');
         }
         
+        // ========== EDITAR CONCORRENTE ==========
         window.editarConcorrente = (id) => {
             const c = allContestants.find(c => c.id === id);
-            if (c) showEditModal(c);
-        };
-        
-        async function showEditModal(c) {
+            if (!c) return;
+            
             const modal = document.createElement('div');
             modal.className = 'modal-overlay';
             modal.innerHTML = `
                 <div class="modal-content">
                     <h3 style="margin-bottom: 20px;">✏️ Editar ${escapeHtml(c.nome)}</h3>
                     <input type="text" id="editNome" value="${escapeHtml(c.nome)}" placeholder="Nome">
-                    <div class="slug-preview" style="margin-bottom: 12px;">
-                        <i class="fas fa-link"></i> <span id="editSlugPreview">${c.slug || ''}</span>
-                    </div>
-                    <input type="text" id="editSlug" value="${c.slug || ''}" placeholder="Slug (URL amigável)">
+                    <div class="slug-preview"><i class="fas fa-link"></i> <span id="editSlugPreview">${c.slug || ''}</span></div>
                     <input type="text" id="editFotoUrl" value="${c.foto || ''}" placeholder="URL da foto">
-                    ${c.foto ? `<img src="${c.foto}" class="photo-preview" id="editFotoPreview" onerror="this.style.display='none'">` : ''}
+                    ${c.foto ? `<img src="${c.foto}" style="width:80px; height:80px; border-radius:50%; margin:8px auto; display:block;" onerror="this.style.display='none'">` : ''}
                     <input type="text" id="editRivalidade" value="${escapeHtml(c.rivalidades || '')}" placeholder="Rivalidade">
                     <textarea id="editBio" placeholder="Bio">${escapeHtml(c.bio || '')}</textarea>
+                    
+                    <h4 style="margin: 16px 0 8px;">Status</h4>
+                    <select id="editStatus">
+                        <option value="ativo" ${c.status === 'ativo' ? 'selected' : ''}>🎭 Ativo</option>
+                        <option value="expulso" ${c.status === 'expulso' ? 'selected' : ''}>❌ Expulso</option>
+                        <option value="desistiu" ${c.status === 'desistiu' ? 'selected' : ''}>😢 Desistiu</option>
+                        <option value="vencedor" ${c.status === 'vencedor' ? 'selected' : ''}>🏆 Vencedor</option>
+                    </select>
+                    
+                    ${c.status === 'expulso' ? `
+                    <input type="number" id="editPercentagem" value="${c.percentagem_expulsao || ''}" placeholder="% de votos na expulsão">
+                    <input type="number" id="editOrdemSaida" value="${c.ordem_saida || ''}" placeholder="Ordem de saída (1,2,3...)">
+                    ` : ''}
+                    
                     <div style="display: flex; gap: 12px; margin-top: 16px;">
                         <button id="salvarEditBtn" style="flex:1;">💾 Salvar</button>
                         <button id="cancelarEditBtn" class="btn-secondary" style="flex:1;">Cancelar</button>
@@ -838,47 +986,56 @@
             `;
             document.body.appendChild(modal);
             
-            const preview = modal.querySelector('#editFotoPreview');
-            const urlInput = modal.querySelector('#editFotoUrl');
-            if (preview && urlInput) {
-                urlInput.addEventListener('input', (e) => {
-                    if (e.target.value) preview.src = e.target.value;
-                });
-            }
-            
-            modal.querySelector('#salvarEditBtn').onclick = async () => {
-                const novoNome = modal.querySelector('#editNome').value.trim();
-                let novoSlug = modal.querySelector('#editSlug').value.trim();
+            document.getElementById('salvarEditBtn').onclick = async () => {
+                const novoNome = document.getElementById('editNome').value.trim();
+                const novoSlug = gerarSlug(novoNome);
+                const novoStatus = document.getElementById('editStatus').value;
                 
-                if (!novoNome) return alert('Nome obrigatório');
-                
-                if (!novoSlug) {
-                    novoSlug = gerarSlug(novoNome);
-                } else {
-                    novoSlug = gerarSlug(novoSlug);
-                }
-                
-                // Verificar se slug já existe (excluindo este)
-                const exists = await slugExists(novoSlug, c.id);
-                if (exists) {
-                    alert(`Slug "${novoSlug}" já existe! Usa outro.`);
-                    return;
-                }
-                
-                await db.collection('concorrentes').doc(c.id).update({
+                const updateData = {
                     nome: novoNome,
                     slug: novoSlug,
-                    foto: modal.querySelector('#editFotoUrl').value.trim(),
-                    rivalidades: modal.querySelector('#editRivalidade').value,
-                    bio: modal.querySelector('#editBio').value
-                });
+                    foto: document.getElementById('editFotoUrl').value.trim(),
+                    rivalidades: document.getElementById('editRivalidade').value,
+                    bio: document.getElementById('editBio').value,
+                    status: novoStatus
+                };
                 
-                showToast(`✅ ${c.nome} atualizado! Slug: ${novoSlug}`);
+                if (novoStatus === 'expulso') {
+                    updateData.percentagem_expulsao = parseInt(document.getElementById('editPercentagem')?.value);
+                    updateData.ordem_saida = parseInt(document.getElementById('editOrdemSaida')?.value);
+                    updateData.data_saida = new Date();
+                }
+                
+                await db.collection('concorrentes').doc(c.id).update(updateData);
+                showToast(`✅ ${c.nome} atualizado!`);
                 modal.remove();
             };
             
-            modal.querySelector('#cancelarEditBtn').onclick = () => modal.remove();
-        }
+            document.getElementById('cancelarEditBtn').onclick = () => modal.remove();
+        };
+        
+        // ========== ALTERAR STATUS RAPIDAMENTE ==========
+        window.alterarStatus = async (id, statusAtual) => {
+            const novosStatus = {
+                'ativo': 'expulso',
+                'expulso': 'desistiu',
+                'desistiu': 'vencedor',
+                'vencedor': 'ativo'
+            };
+            const novoStatus = novosStatus[statusAtual] || 'ativo';
+            
+            let percentagem = null;
+            if (novoStatus === 'expulso') {
+                percentagem = prompt('Percentagem de votos para expulsão?');
+            }
+            
+            const updateData = { status: novoStatus };
+            if (percentagem) updateData.percentagem_expulsao = parseFloat(percentagem);
+            if (novoStatus === 'expulso') updateData.data_saida = new Date();
+            
+            await db.collection('concorrentes').doc(id).update(updateData);
+            showToast(`Status alterado para ${novoStatus}`);
+        };
         
         window.removerConcorrente = async (id) => {
             if (confirm('Remover concorrente? Todas as stats serão perdidas.')) {
@@ -887,74 +1044,165 @@
             }
         };
         
-        function updateSEOStats() {
-            document.getElementById('seoConcorrentes').innerText = allContestants.length;
-            const withSlug = allContestants.filter(c => c.slug && c.slug.length > 0).length;
-            document.getElementById('seoSlugs').innerText = withSlug;
-            document.getElementById('seoPages').innerText = withSlug; // páginas SEO geradas
-        }
-        
-        function renderSlugsList() {
-            const container = document.getElementById('slugsList');
-            if (allContestants.length === 0) {
-                container.innerHTML = '<div style="opacity:0.6;">Nenhum concorrente</div>';
+        // ========== RENDER TIMELINE (com drag & drop e edição) ==========
+        function renderTimelineList() {
+            const container = document.getElementById('timelineList');
+            if (allTimelineEvents.length === 0) {
+                container.innerHTML = '<div style="opacity:0.6; text-align:center;">Sem eventos ainda</div>';
                 return;
             }
-            container.innerHTML = allContestants.map(c => `
-                <div class="list-item" style="padding: 8px;">
-                    <div style="flex:1;">
-                        <strong>${escapeHtml(c.nome)}</strong><br>
-                        <code style="font-size:0.65rem;">/concorrente/${c.slug || 'sem-slug'}</code>
+            
+            container.innerHTML = allTimelineEvents.map((ev, index) => `
+                <div class="list-item" data-id="${ev.id}" data-order="${index}" draggable="true">
+                    <div class="drag-handle"><i class="fas fa-grip-vertical"></i></div>
+                    <div class="list-item-content">
+                        <div style="font-size:0.7rem; color:#999;">${ev.data || '--'} ${ev.hora || ''}</div>
+                        <div>${escapeHtml(ev.texto)}</div>
+                        ${ev.concorrentesMencionados?.length ? `<div style="font-size:0.65rem; color:#ff69b4;">🏷️ ${ev.concorrentesMencionados.join(', ')}</div>` : ''}
                     </div>
-                    <button onclick="window.copySlug('${c.slug}')" class="btn-small" style="width: auto; background:#3b82f6;">📋</button>
+                    <div class="list-item-actions">
+                        <button onclick="editarEvento('${ev.id}')" class="btn-small btn-edit">✏️</button>
+                        <button onclick="removerEvento('${ev.id}')" class="btn-small btn-danger">🗑️</button>
+                    </div>
                 </div>
             `).join('');
+            
+            // Adicionar drag & drop
+            const items = document.querySelectorAll('#timelineList .list-item');
+            items.forEach(item => {
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragover', handleDragOver);
+                item.addEventListener('drop', handleDrop);
+                item.addEventListener('dragend', handleDragEnd);
+            });
         }
         
-        window.copySlug = (slug) => {
-            if (slug) {
-                navigator.clipboard.writeText(`/concorrente/${slug}`);
-                showToast('🔗 Slug copiado!');
+        let dragSourceId = null;
+        
+        function handleDragStart(e) {
+            dragSourceId = e.target.closest('.list-item').getAttribute('data-id');
+            e.target.closest('.list-item').classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+        
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+        }
+        
+        function handleDrop(e) {
+            e.preventDefault();
+            const targetItem = e.target.closest('.list-item');
+            if (!targetItem) return;
+            
+            const targetId = targetItem.getAttribute('data-id');
+            if (dragSourceId === targetId) return;
+            
+            const sourceIndex = allTimelineEvents.findIndex(ev => ev.id === dragSourceId);
+            const targetIndex = allTimelineEvents.findIndex(ev => ev.id === targetId);
+            
+            if (sourceIndex === -1 || targetIndex === -1) return;
+            
+            // Reordenar array
+            const newOrder = [...allTimelineEvents];
+            const [movedItem] = newOrder.splice(sourceIndex, 1);
+            newOrder.splice(targetIndex, 0, movedItem);
+            
+            // Atualizar ordens no Firebase
+            const batch = db.batch();
+            newOrder.forEach((item, idx) => {
+                batch.update(db.collection('timeline').doc(item.id), { ordem: idx });
+            });
+            batch.commit().then(() => {
+                showToast('📋 Ordem atualizada!');
+            });
+        }
+        
+        function handleDragEnd(e) {
+            e.target.closest('.list-item')?.classList.remove('dragging');
+            dragSourceId = null;
+        }
+        
+        // ========== EDITAR EVENTO ==========
+        window.editarEvento = (id) => {
+            const ev = allTimelineEvents.find(e => e.id === id);
+            if (!ev) return;
+            
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <h3 style="margin-bottom: 20px;">✏️ Editar Evento</h3>
+                    <input type="date" id="editEventoData" value="${ev.data || ''}">
+                    <input type="time" id="editEventoHora" value="${ev.hora || ''}">
+                    <textarea id="editEventoTexto" rows="4" placeholder="Descrição">${escapeHtml(ev.texto)}</textarea>
+                    <div style="display: flex; gap: 12px; margin-top: 16px;">
+                        <button id="salvarEditEventoBtn" style="flex:1;">💾 Salvar</button>
+                        <button id="cancelarEditEventoBtn" class="btn-secondary" style="flex:1;">Cancelar</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            document.getElementById('salvarEditEventoBtn').onclick = async () => {
+                const novoTexto = document.getElementById('editEventoTexto').value.trim();
+                if (!novoTexto) return alert('Texto obrigatório');
+                
+                const novaData = document.getElementById('editEventoData').value;
+                const novaHora = document.getElementById('editEventoHora').value;
+                
+                // Extrair concorrentes mencionados
+                const mentionedRegex = /@([a-zA-ZÀ-ÿ\s]+)/g;
+                const mentioned = [];
+                let match;
+                while ((match = mentionedRegex.exec(novoTexto)) !== null) {
+                    mentioned.push(match[1].trim());
+                }
+                
+                await db.collection('timeline').doc(id).update({
+                    texto: novoTexto,
+                    data: novaData,
+                    hora: novaHora,
+                    timestamp: new Date(`${novaData}T${novaHora}:00`),
+                    concorrentesMencionados: mentioned
+                });
+                
+                showToast('✅ Evento atualizado!');
+                modal.remove();
+            };
+            
+            document.getElementById('cancelarEditEventoBtn').onclick = () => modal.remove();
+        };
+        
+        window.removerEvento = async (id) => {
+            if (confirm('Remover este evento da timeline?')) {
+                await db.collection('timeline').doc(id).delete();
+                showToast('🗑️ Evento removido');
             }
         };
         
-        function generateSitemap() {
-            const baseUrl = `https://${window.location.hostname}`;
-            let sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n`;
-            sitemap += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
-            sitemap += `    <url><loc>${baseUrl}/</loc><priority>1.0</priority></url>\n`;
-            
-            allContestants.forEach(c => {
-                if (c.slug) {
-                    sitemap += `    <url><loc>${baseUrl}/concorrente/${c.slug}</loc><priority>0.8</priority></url>\n`;
-                }
-            });
-            
-            sitemap += `</urlset>`;
-            
-            const preview = document.getElementById('sitemapPreview');
-            preview.innerHTML = `<code style="font-size:0.65rem; word-break:break-all;">${escapeHtml(sitemap.substring(0, 300))}${sitemap.length > 300 ? '...' : ''}</code>`;
-            showToast('📄 Sitemap gerado! Copia o conteúdo para o ficheiro sitemap.xml');
-            
-            // Opcional: copiar para clipboard
-            navigator.clipboard.writeText(sitemap).then(() => {
-                showToast('📋 Sitemap copiado para a clipboard!');
-            });
-        }
+        window.removerEventoEstruturado = async (id) => {
+            if (confirm('Remover esta estatística?')) {
+                await db.collection('eventos_estruturados').doc(id).delete();
+                showToast('🗑️ Estatística removida');
+            }
+        };
         
-        function renderEventoCheckboxes() {
-            const container = document.getElementById('eventoConcorrentesCheckbox');
+        // ========== RENDER TAGS DE CONCORRENTES NA TIMELINE ==========
+        function renderEventoConcorrentesTags() {
+            const container = document.getElementById('eventoConcorrentesTags');
             if (allContestants.length === 0) {
                 container.innerHTML = '<span style="opacity:0.5;">Nenhum concorrente ainda</span>';
                 return;
             }
             container.innerHTML = allContestants.map(c => `
-                <label>
-                    <input type="checkbox" value="${escapeHtml(c.nome)}"> ${escapeHtml(c.nome)}
+                <label onclick="insertConcorrenteTag('${escapeHtml(c.nome).replace(/'/g, "\\'")}')" style="cursor:pointer;">
+                    <i class="fas fa-user"></i> ${escapeHtml(c.nome)}
                 </label>
             `).join('');
         }
         
+        // ========== RENDER CHECKBOXES VOTAÇÕES ==========
         function renderVotacaoCheckboxes() {
             const container = document.getElementById('votOpcoesCheckbox');
             if (allContestants.length === 0) {
@@ -968,79 +1216,27 @@
             `).join('');
         }
         
-        function renderUltimosEventos() {
-            const container = document.getElementById('ultimosEventos');
-            if (allEvents.length === 0) {
-                container.innerHTML = '<div style="opacity:0.6; text-align:center;">Sem eventos ainda</div>';
-                return;
-            }
-            let html = '';
-            allEvents.slice(0, 20).forEach(ev => {
-                const data = ev.data || '--/--';
-                html += `
-                    <div class="list-item">
-                        <div class="list-item-content">
-                            <strong>${data}</strong> ${escapeHtml(ev.texto)}
-                        </div>
-                        <div class="list-item-actions">
-                            <button onclick="window.removerEvento('${ev.id}')" class="btn-small btn-danger">🗑️</button>
-                        </div>
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
+        // ========== UPDATE SELECTS EVENTOS ESTRUTURADOS ==========
+        function updateEstruturadoSelects() {
+            const options = allContestants.map(c => `<option value="${escapeHtml(c.nome)}">${escapeHtml(c.nome)}</option>`).join('');
+            document.getElementById('estrutQuemNomeou').innerHTML = '<option>Selecionar...</option>' + options;
+            document.getElementById('estrutAlvoNomeado').innerHTML = '<option>Selecionar...</option>' + options;
+            document.getElementById('estrutQuemExpulso').innerHTML = '<option>Selecionar...</option>' + options;
+            document.getElementById('estrutQuemSalvo').innerHTML = '<option>Selecionar...</option>' + options;
+            document.getElementById('estrutQuemImune').innerHTML = '<option>Selecionar...</option>' + options;
+            document.getElementById('estrutQuemVenceu').innerHTML = '<option>Selecionar...</option>' + options;
         }
         
-        function renderEventosNaoPublicados() {
-            const container = document.getElementById('eventosNaoPublicados');
-            const naoPublicados = pendingPosts.filter(p => !p.published);
-            
-            if (naoPublicados.length === 0) {
-                container.innerHTML = '<div style="opacity:0.6; text-align:center;">📭 Sem eventos pendentes</div>';
-                return;
-            }
-            
-            container.innerHTML = naoPublicados.slice(0, 10).map(p => `
-                <div class="list-item" style="padding: 8px;">
-                    <div class="list-item-content" style="font-size:0.75rem;">
-                        ${escapeHtml(p.content.substring(0, 80))}${p.content.length > 80 ? '...' : ''}
-                    </div>
-                    <div class="list-item-actions">
-                        <button onclick="window.publicarAgora('${p.id}')" class="btn-small btn-success">📢 Publicar</button>
-                        <button onclick="window.ignorarPublicacao('${p.id}')" class="btn-small btn-secondary">Ignorar</button>
-                    </div>
-                </div>
-            `).join('');
-        }
+        // Mostrar/esconder campos conforme tipo de evento estruturado
+        document.getElementById('estrutTipo')?.addEventListener('change', function() {
+            document.getElementById('estrutCamposNomeacao').style.display = this.value === 'nomeacao' ? 'block' : 'none';
+            document.getElementById('estrutCamposExpulsao').style.display = this.value === 'expulsao' ? 'block' : 'none';
+            document.getElementById('estrutCamposSalvo').style.display = this.value === 'salvo' ? 'block' : 'none';
+            document.getElementById('estrutCamposImunidade').style.display = this.value === 'imunidade' ? 'block' : 'none';
+            document.getElementById('estrutCamposProva').style.display = this.value === 'prova' ? 'block' : 'none';
+        });
         
-        window.publicarAgora = async (id) => {
-            const post = pendingPosts.find(p => p.id === id);
-            if (!post) return;
-            
-            const confirmar = confirm(`Publicar:\n\n"${post.content}"\n\nConfirmar?`);
-            if (confirmar) {
-                await db.collection('pending_posts').doc(id).update({
-                    published: true,
-                    publishedAt: new Date()
-                });
-                showToast('✅ Publicado!');
-                renderEventosNaoPublicados();
-            }
-        };
-        
-        window.ignorarPublicacao = async (id) => {
-            await db.collection('pending_posts').doc(id).delete();
-            showToast('🗑️ Evento ignorado');
-            renderEventosNaoPublicados();
-        };
-        
-        window.removerEvento = async (id) => {
-            if (confirm('Remover este evento da timeline?')) {
-                await db.collection('timeline').doc(id).delete();
-                showToast('🗑️ Evento removido');
-            }
-        };
-        
+        // ========== VOTAÇÕES COM EDIÇÃO ==========
         async function renderVotacoesList() {
             const snap = await db.collection('votacoes').orderBy('criadoEm', 'desc').get();
             const container = document.getElementById('votacoesList');
@@ -1048,25 +1244,65 @@
                 container.innerHTML = '<div style="opacity:0.6; text-align:center;">Nenhuma votação</div>';
                 return;
             }
+            
             let html = '';
-            snap.forEach(doc => {
+            for (const doc of snap.docs) {
                 const v = doc.data();
                 const status = v.ativa === false ? '🔒 Fechada' : '🟢 Ativa';
                 html += `
                     <div class="list-item">
                         <div class="list-item-content">
-                            <strong>${escapeHtml(v.pergunta.substring(0, 40))}</strong><br>
-                            <span style="font-size:0.7rem;">${status}</span>
+                            <strong>${escapeHtml(v.pergunta.substring(0, 60))}</strong><br>
+                            <span style="font-size:0.7rem;">${status} | ${v.opcoes?.length || 0} opções</span>
                         </div>
                         <div class="list-item-actions">
-                            ${v.ativa !== false ? `<button onclick="window.fecharVotacao('${doc.id}')" class="btn-small" style="background:#f59e0b;">🔒 Fechar</button>` : ''}
-                            <button onclick="window.eliminarVotacao('${doc.id}')" class="btn-small btn-danger">🗑️</button>
+                            <button onclick="editarVotacao('${doc.id}')" class="btn-small btn-edit">✏️ Editar</button>
+                            ${v.ativa !== false ? `<button onclick="fecharVotacao('${doc.id}')" class="btn-small btn-warning">🔒 Fechar</button>` : ''}
+                            <button onclick="eliminarVotacao('${doc.id}')" class="btn-small btn-danger">🗑️</button>
                         </div>
                     </div>
                 `;
-            });
+            }
             container.innerHTML = html;
         }
+        
+        window.editarVotacao = (id) => {
+            db.collection('votacoes').doc(id).get().then(doc => {
+                const v = doc.data();
+                if (!v) return;
+                
+                const modal = document.createElement('div');
+                modal.className = 'modal-overlay';
+                modal.innerHTML = `
+                    <div class="modal-content">
+                        <h3 style="margin-bottom: 20px;">✏️ Editar Votação</h3>
+                        <input type="text" id="editPergunta" value="${escapeHtml(v.pergunta)}" placeholder="Pergunta">
+                        <textarea id="editOpcoes" placeholder="Opções (separadas por vírgula)">${v.opcoes?.join(', ') || ''}</textarea>
+                        <div style="display: flex; gap: 12px; margin-top: 16px;">
+                            <button id="salvarEditVotacaoBtn" style="flex:1;">💾 Salvar</button>
+                            <button id="cancelarEditVotacaoBtn" class="btn-secondary" style="flex:1;">Cancelar</button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+                
+                document.getElementById('salvarEditVotacaoBtn').onclick = async () => {
+                    const novaPergunta = document.getElementById('editPergunta').value.trim();
+                    const novasOpcoes = document.getElementById('editOpcoes').value.split(',').map(o => o.trim());
+                    if (!novaPergunta || novasOpcoes.length === 0) return alert('Pergunta e opções obrigatórias');
+                    
+                    await db.collection('votacoes').doc(id).update({
+                        pergunta: novaPergunta,
+                        opcoes: novasOpcoes
+                    });
+                    showToast('✅ Votação atualizada!');
+                    modal.remove();
+                    renderVotacoesList();
+                };
+                
+                document.getElementById('cancelarEditVotacaoBtn').onclick = () => modal.remove();
+            });
+        };
         
         window.fecharVotacao = async (id) => {
             await db.collection('votacoes').doc(id).update({ ativa: false });
@@ -1084,13 +1320,57 @@
             }
         };
         
-        function escapeHtml(text) {
-            if (!text) return '';
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
+        // ========== SEO FUNCTIONS ==========
+        function updateSEOStats() {
+            document.getElementById('seoConcorrentes').innerText = allContestants.length;
+            const withSlug = allContestants.filter(c => c.slug && c.slug.length > 0).length;
+            document.getElementById('seoSlugs').innerText = withSlug;
+            document.getElementById('seoPages').innerText = withSlug * 2;
         }
         
+        function renderSlugsList() {
+            const container = document.getElementById('slugsList');
+            if (allContestants.length === 0) {
+                container.innerHTML = '<div style="opacity:0.6;">Nenhum concorrente</div>';
+                return;
+            }
+            container.innerHTML = allContestants.map(c => `
+                <div class="list-item" style="padding: 8px;">
+                    <div style="flex:1;">
+                        <strong>${escapeHtml(c.nome)}</strong><br>
+                        <code style="font-size:0.65rem;">/concorrente/${c.slug || 'sem-slug'}</code>
+                    </div>
+                    <button onclick="copyToClipboard('/concorrente/${c.slug}')" class="btn-small" style="width: auto; background:#3b82f6;">📋</button>
+                </div>
+            `).join('');
+        }
+        
+        window.copyToClipboard = (text) => {
+            navigator.clipboard.writeText(text);
+            showToast('🔗 Link copiado!');
+        };
+        
+        function generateSitemap() {
+            const baseUrl = `https://${window.location.hostname}`;
+            let sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+            sitemap += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+            sitemap += `    <url><loc>${baseUrl}/</loc><priority>1.0</priority></url>\n`;
+            sitemap += `    <url><loc>${baseUrl}/expulsoes.html</loc><priority>0.9</priority></url>\n`;
+            sitemap += `    <url><loc>${baseUrl}/nomeados-semana.html</loc><priority>0.9</priority></url>\n`;
+            sitemap += `    <url><loc>${baseUrl}/estatisticas.html</loc><priority>0.8</priority></url>\n`;
+            
+            allContestants.forEach(c => {
+                if (c.slug) {
+                    sitemap += `    <url><loc>${baseUrl}/concorrente/${c.slug}</loc><priority>0.8</priority></url>\n`;
+                }
+            });
+            
+            sitemap += `</urlset>`;
+            navigator.clipboard.writeText(sitemap);
+            showToast('📋 Sitemap copiado! Substitui o ficheiro sitemap.xml');
+        }
+        
+        // ========== TABS ==========
         function initTabs() {
             document.querySelectorAll('.menu-item').forEach(tab => {
                 tab.addEventListener('click', () => {
@@ -1103,13 +1383,10 @@
             });
         }
         
-        // Inicializar robots.txt preview
-        const robotsContent = `User-agent: *
-Allow: /
-Sitemap: https://${window.location.hostname}/sitemap.xml`;
-        document.getElementById('robotsPreview').innerHTML = `<code style="font-size:0.65rem;">${escapeHtml(robotsContent)}</code>`;
-        
         initTabs();
+        
+        // Mostrar campos iniciais
+        document.getElementById('estrutCamposNomeacao').style.display = 'block';
     </script>
 </body>
 </html>
