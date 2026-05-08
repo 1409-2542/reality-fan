@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#ff69b4">
+    <meta name="robots" content="index, follow">
+    <title>Expulsões • Histórico | Secret Story</title>
+    <meta name="description" content="Histórico completo de todas as expulsões do Secret Story Desafio Final. Quem saiu, quando saiu e com que percentagem de votos.">
+    <meta name="keywords" content="expulsões Secret Story, quem saiu, resultados expulsão, votos expulsão">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Expulsões • Histórico Completo | Secret Story">
+    <meta property="og:description" content="Todas as expulsões do Secret Story Desafio Final. Percentagens, datas e quem saiu.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://i.imgur.com/favicon.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icon-192.png">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #fdf2f8 0%, #f3e8ff 50%, #e0f2fe 100%);
+            color: #1a1a2e;
+            min-height: 100vh;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #ff69b4 0%, #9b2dff 50%, #3b82f6 100%);
+            padding: 20px 16px;
+            border-radius: 0 0 32px 32px;
+        }
+        
+        .gradient-bg h1 { color: white; font-size: 1.6rem; margin-bottom: 4px; }
+        .gradient-bg p { color: rgba(255,255,255,0.85); font-size: 0.8rem; }
+        
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px 16px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 28px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        
+        .card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #ff69b4;
+            border-left: 4px solid #ff69b4;
+            padding-left: 12px;
+        }
+        
+        .expulsao-item {
+            background: #f8f9fa;
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        
+        .expulsao-item:hover {
+            transform: translateX(5px);
+            background: #fff0f5;
+        }
+        
+        .expulsao-data {
+            font-size: 0.7rem;
+            color: #ff69b4;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        
+        .expulsao-nome {
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .expulsao-percentagem {
+            background: linear-gradient(135deg, #ff69b4, #9b2dff);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .expulsao-ordem {
+            font-size: 0.7rem;
+            color: #888;
+            margin-top: 6px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #ff69b410, #9b2dff10);
+            border-radius: 20px;
+            padding: 16px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ff69b4;
+        }
+        
+        .stat-label {
+            font-size: 0.7rem;
+            color: #666;
+            margin-top: 4px;
+        }
+        
+        .bottom-menu {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 16px;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            z-index: 100;
+        }
+        
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            font-size: 0.65rem;
+            color: #888;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 30px;
+            text-decoration: none;
+        }
+        
+        .menu-item i { font-size: 1.3rem; }
+        .menu-item.active { color: #ff69b4; background: rgba(255, 105, 180, 0.1); }
+        
+        .back-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff69b4, #9b2dff);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .expulsao-item {
+            animation: fadeIn 0.3s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-bg">
+        <h1><i class="fas fa-skull"></i> Expulsões</h1>
+        <p>Histórico completo • Secret Story Desafio Final</p>
+    </div>
+    
+    <div class="container">
+        <div class="card">
+            <h2><i class="fas fa-chart-line"></i> Estatísticas</h2>
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalExpulsoes">0</div>
+                    <div class="stat-label">Total Expulsões</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="maiorPercentagem">0%</div>
+                    <div class="stat-label">Maior Percentagem</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="menorPercentagem">0%</div>
+                    <div class="stat-label">Menor Percentagem</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2><i class="fas fa-history"></i> Histórico de Expulsões</h2>
+            <div id="expulsoesList">
+                <div style="text-align:center; padding:40px;">
+                    <i class="fas fa-spinner fa-pulse"></i> A carregar...
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center;">
+            <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Voltar à App</a>
+        </div>
+    </div>
+    
+    <div class="bottom-menu">
+        <a href="index.html" class="menu-item">
+            <i class="fas fa-home"></i><span>Início</span>
+        </a>
+        <a href="expulsoes.html" class="menu-item active">
+            <i class="fas fa-skull"></i><span>Expulsões</span>
+        </a>
+        <a href="nomeados-semana.html" class="menu-item">
+            <i class="fas fa-list"></i><span>Nomeados</span>
+        </a>
+        <a href="estatisticas.html" class="menu-item">
+            <i class="fas fa-chart-simple"></i><span>Stats</span>
+        </a>
+    </div>
+    
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDhLsFf02lCuSB1i6Wd-Jb-c28KcGVNDro",
+            authDomain: "tvi-reality-b2cf7.firebaseapp.com",
+            projectId: "tvi-reality-b2cf7",
+            storageBucket: "tvi-reality-b2cf7.firebasestorage.app",
+            messagingSenderId: "956824114157",
+            appId: "1:956824114157:web:5205bcb8140875efeacde4"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        async function carregarExpulsoes() {
+            const container = document.getElementById('expulsoesList');
+            
+            try {
+                // Buscar concorrentes com status 'expulso'
+                const snapshot = await db.collection('concorrentes')
+                    .where('status', '==', 'expulso')
+                    .orderBy('ordem_saida', 'asc')
+                    .get();
+                
+                if (snapshot.empty) {
+                    container.innerHTML = `
+                        <div style="text-align:center; padding:40px; opacity:0.6;">
+                            <i class="fas fa-info-circle"></i> Nenhuma expulsão registada ainda.
+                        </div>`;
+                    return;
+                }
+                
+                let expulsoes = [];
+                let maior = 0, menor = 100;
+                
+                snapshot.forEach(doc => {
+                    const c = doc.data();
+                    if (c.percentagem_expulsao) {
+                        maior = Math.max(maior, c.percentagem_expulsao);
+                        menor = Math.min(menor, c.percentagem_expulsao);
+                    }
+                    expulsoes.push(c);
+                });
+                
+                document.getElementById('totalExpulsoes').innerText = expulsoes.length;
+                document.getElementById('maiorPercentagem').innerText = maior > 0 ? `${maior}%` : '--';
+                document.getElementById('menorPercentagem').innerText = menor < 100 ? `${menor}%` : '--';
+                
+                let html = '';
+                expulsoes.forEach((c, idx) => {
+                    const dataSaida = c.data_saida ? new Date(c.data_saida.toDate()).toLocaleDateString('pt-PT') : 'Data desconhecida';
+                    const percentagem = c.percentagem_expulsao || '--';
+                    
+                    html += `
+                        <div class="expulsao-item" onclick="verConcorrente('${c.slug}')">
+                            <div class="expulsao-data">
+                                <i class="fas fa-calendar"></i> ${dataSaida} • ${idx + 1}ª Expulsão
+                            </div>
+                            <div class="expulsao-nome">
+                                <strong>${escapeHtml(c.nome)}</strong>
+                                ${percentagem !== '--' ? `<span class="expulsao-percentagem">${percentagem}% dos votos</span>` : ''}
+                            </div>
+                            <div class="expulsao-ordem">
+                                <i class="fas fa-trophy"></i> ${c.posicao_final ? `${c.posicao_final}º lugar` : 'Posição não definida'}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                container.innerHTML = html;
+                
+            } catch (error) {
+                console.error('Erro:', error);
+                container.innerHTML = '<div style="text-align:center; padding:40px; color:red;">Erro ao carregar expulsões</div>';
+            }
+        }
+        
+        window.verConcorrente = (slug) => {
+            window.location.href = `/concorrente/${slug}`;
+        };
+        
+        carregarExpulsoes();
+        
+        // Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+    </script>
+</body>
+</html>
