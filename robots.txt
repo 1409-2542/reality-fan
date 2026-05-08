@@ -1,3 +1,34 @@
+# robots.txt para Secret Story Fan App
+# Permite todos os bots com regras específicas
+
 User-agent: *
 Allow: /
+Allow: /concorrente/
+Allow: /edicao/
+Allow: /estatisticas/
+Allow: /expulsoes.html
+Allow: /nomeados-semana.html
+
+# Desativar páginas administrativas
+Disallow: /admin.html
+Disallow: /admin/
+
+# Desativar parâmetros desnecessários
+Disallow: /*?*
+Disallow: /chat*
+
+# Sitemap
 Sitemap: https://reality-fan-pi.vercel.app/sitemap.xml
+
+# Crawl delay para não sobrecarregar
+Crawl-delay: 1
+
+# Google específico
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0.5
+
+# Bing específico
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
