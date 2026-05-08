@@ -1,10 +1,247 @@
 <!DOCTYPE html>
-<html>
-<head><title>Sobre • Secret Story</title>...</head>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#ff69b4">
+    <meta name="robots" content="index, follow">
+    <title>Sobre • Secret Story Fan App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #fdf2f8 0%, #f3e8ff 50%, #e0f2fe 100%);
+            color: #1a1a2e;
+            padding-bottom: 80px;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #ff69b4 0%, #9b2dff 50%, #3b82f6 100%);
+            padding: 20px 16px;
+            border-radius: 0 0 32px 32px;
+        }
+        
+        .gradient-bg h1 { color: white; font-size: 1.6rem; margin-bottom: 4px; }
+        .gradient-bg p { color: rgba(255,255,255,0.85); font-size: 0.8rem; }
+        
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px 16px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 28px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        
+        .card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 16px;
+            color: #ff69b4;
+            border-left: 4px solid #ff69b4;
+            padding-left: 12px;
+        }
+        
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        
+        .feature-item {
+            background: #f8f9fa;
+            border-radius: 20px;
+            padding: 16px;
+            text-align: center;
+        }
+        
+        .feature-item i {
+            font-size: 2rem;
+            color: #ff69b4;
+            margin-bottom: 8px;
+        }
+        
+        .feature-item h3 {
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+        
+        .feature-item p {
+            font-size: 0.7rem;
+            color: #666;
+        }
+        
+        .bottom-menu {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 16px;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            z-index: 100;
+        }
+        
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            font-size: 0.65rem;
+            color: #888;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 30px;
+            text-decoration: none;
+        }
+        
+        .menu-item i { font-size: 1.3rem; }
+        .menu-item.active { color: #ff69b4; background: rgba(255, 105, 180, 0.1); }
+        
+        .back-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff69b4, #9b2dff);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+        
+        .version {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #999;
+            margin-top: 20px;
+        }
+    </style>
+</head>
 <body>
-    <h1>Sobre este projeto</h1>
-    <p>Este é um projeto de fãs do reality show Secret Story - Desafio Final da TVI.</p>
-    <p>Criado para a comunidade acompanhar, votar e discutir o programa em tempo real.</p>
-    <p><strong>Não somos afiliados oficialmente à TVI ou à Endemol.</strong></p>
+    <div class="gradient-bg">
+        <h1><i class="fas fa-info-circle"></i> Sobre o Projeto</h1>
+        <p>Secret Story • Desafio Final</p>
+    </div>
+    
+    <div class="container">
+        <div class="card">
+            <h2>🎯 O que é?</h2>
+            <p>O <strong>Secret Story Fan App</strong> é um projeto comunitário criado por fãs para fãs do reality show Secret Story - Desafio Final da TVI.</p>
+            <p>O nosso objetivo é proporcionar uma experiência interativa onde os fãs podem acompanhar o programa em tempo real, votar, apoiar os seus concorrentes favoritos e interagir com a comunidade.</p>
+            <p><strong>⚠️ Nota importante:</strong> Este projeto não é oficial nem tem qualquer afiliação com a TVI, Endemol ou qualquer entidade relacionada com o programa Secret Story.</p>
+        </div>
+        
+        <div class="card">
+            <h2>✨ Funcionalidades</h2>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <i class="fas fa-users"></i>
+                    <h3>Concorrentes</h3>
+                    <p>Perfis completos com fotos, bio e estatísticas</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-heart"></i>
+                    <h3>Likes & Teams</h3>
+                    <p>Apoia os teus concorrentes favoritos</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-clock"></i>
+                    <h3>Timeline</h3>
+                    <p>Acompanha todos os eventos do programa</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-chart-simple"></i>
+                    <h3>Votações</h3>
+                    <p>Participa em votações e quizzes</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-comments"></i>
+                    <h3>Chat</h3>
+                    <p>Conversa com outros fãs em tempo real</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-trophy"></i>
+                    <h3>Rankings</h3>
+                    <p>Vê quem está no topo dos likes e teams</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-skull"></i>
+                    <h3>Expulsões</h3>
+                    <p>Histórico completo de todas as saídas</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>PWA</h3>
+                    <p>Instala a app no teu telemóvel</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>🛠️ Tecnologias Utilizadas</h2>
+            <ul style="margin-left: 20px;">
+                <li><strong>Frontend:</strong> HTML5, CSS3, JavaScript (ES6+)</li>
+                <li><strong>Backend:</strong> Firebase (Firestore, Auth, Hosting)</li>
+                <li><strong>PWA:</strong> Service Worker, Manifest.json</li>
+                <li><strong>Hospedagem:</strong> Vercel</li>
+                <li><strong>SEO:</strong> Meta tags dinâmicas, Sitemap, Schema.org</li>
+            </ul>
+        </div>
+        
+        <div class="card">
+            <h2>📧 Contacto</h2>
+            <p>Dúvidas, sugestões ou problemas técnicos?</p>
+            <p>Utiliza a <a href="contacto.html">página de contacto</a> ou envia email para <strong>contato@seudominio.com</strong></p>
+        </div>
+        
+        <div class="card">
+            <h2>🙏 Agradecimentos</h2>
+            <p>Obrigado a todos os fãs que tornam esta comunidade especial! Cada like, voto e mensagem ajuda a manter este projeto vivo.</p>
+            <p>Se gostas do projeto, partilha com outros fãs! 📱</p>
+        </div>
+        
+        <div style="text-align: center;">
+            <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Voltar à App</a>
+        </div>
+        
+        <div class="version">
+            <i class="fas fa-code-branch"></i> Versão 2.0 | Atualizado em Maio 2026
+        </div>
+    </div>
+    
+    <div class="bottom-menu">
+        <a href="index.html" class="menu-item">
+            <i class="fas fa-home"></i><span>Início</span>
+        </a>
+        <a href="privacy.html" class="menu-item">
+            <i class="fas fa-shield-alt"></i><span>Privacidade</span>
+        </a>
+        <a href="contacto.html" class="menu-item">
+            <i class="fas fa-envelope"></i><span>Contacto</span>
+        </a>
+        <a href="sobre.html" class="menu-item active">
+            <i class="fas fa-info-circle"></i><span>Sobre</span>
+        </a>
+    </div>
+    
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+    </script>
 </body>
 </html>
