@@ -1,12 +1,14 @@
 {
   "name": "Secret Story - Desafio Final",
   "short_name": "Secret Story",
-  "description": "Acompanha o reality show em tempo real, vota e apoia a tua team!",
+  "description": "Acompanha o reality show em tempo real, vota e apoia a tua team! Estatísticas, nomeações, expulsões e muito mais.",
   "start_url": "/",
   "display": "standalone",
   "theme_color": "#ff69b4",
   "background_color": "#ff69b4",
   "orientation": "portrait",
+  "scope": "/",
+  "categories": ["entertainment", "social", "news"],
   "icons": [
     {
       "src": "/icon-192.png",
@@ -20,5 +22,39 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
-  ]
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-mobile.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Página inicial do Secret Story"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Concorrentes",
+      "short_name": "Concorrentes",
+      "description": "Ver todos os concorrentes",
+      "url": "/#concorrentes",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Votações",
+      "short_name": "Votar",
+      "description": "Participa nas votações",
+      "url": "/#votacoes",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Expulsões",
+      "short_name": "Expulsões",
+      "description": "Histórico de expulsões",
+      "url": "/expulsoes.html",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "prefer_related_applications": false,
+  "related_applications": []
 }
