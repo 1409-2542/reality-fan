@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#ff69b4">
+    <meta name="robots" content="index, follow">
+    <title>Nomeados Esta Semana | Secret Story</title>
+    <meta name="description" content="Fica a saber quem são os nomeados esta semana no Secret Story Desafio Final. Acompanha as nomeações em tempo real.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icon-192.png">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #fdf2f8 0%, #f3e8ff 50%, #e0f2fe 100%);
+            color: #1a1a2e;
+            min-height: 100vh;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #ff69b4 0%, #9b2dff 50%, #3b82f6 100%);
+            padding: 20px 16px;
+            border-radius: 0 0 32px 32px;
+        }
+        
+        .gradient-bg h1 { color: white; font-size: 1.6rem; margin-bottom: 4px; }
+        .gradient-bg p { color: rgba(255,255,255,0.85); font-size: 0.8rem; }
+        
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px 16px;
+            padding-bottom: 80px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 28px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        
+        .card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #ff69b4;
+            border-left: 4px solid #ff69b4;
+            padding-left: 12px;
+        }
+        
+        .nomeado-card {
+            background: linear-gradient(135deg, #fff0f5, #f8f0ff);
+            border-radius: 24px;
+            padding: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 1px solid rgba(255,105,180,0.2);
+        }
+        
+        .nomeado-card:hover {
+            transform: scale(1.02);
+        }
+        
+        .nomeado-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 35px;
+            object-fit: cover;
+            border: 3px solid #ff69b4;
+        }
+        
+        .nomeado-info {
+            flex: 1;
+        }
+        
+        .nomeado-nome {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        
+        .nomeado-status {
+            font-size: 0.7rem;
+            color: #ff69b4;
+            margin-top: 4px;
+        }
+        
+        .semana-info {
+            background: linear-gradient(135deg, #ff69b4, #9b2dff);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .votacao-status {
+            background: #f0f0f0;
+            border-radius: 16px;
+            padding: 12px;
+            margin-top: 16px;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+        
+        .bottom-menu {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 16px;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            z-index: 100;
+        }
+        
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            font-size: 0.65rem;
+            color: #888;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 30px;
+            text-decoration: none;
+        }
+        
+        .menu-item i { font-size: 1.3rem; }
+        .menu-item.active { color: #ff69b4; background: rgba(255, 105, 180, 0.1); }
+        
+        .back-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff69b4, #9b2dff);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-bg">
+        <h1><i class="fas fa-list"></i> Nomeados Esta Semana</h1>
+        <p>Atualizado em tempo real • Secret Story</p>
+    </div>
+    
+    <div class="container">
+        <div class="semana-info" id="semanaInfo">
+            <strong>📅 Semana de 08 a 14 Maio 2026</strong>
+        </div>
+        
+        <div class="card">
+            <h2><i class="fas fa-users"></i> Nomeados</h2>
+            <div id="nomeadosList">
+                <div style="text-align:center; padding:40px;">
+                    <i class="fas fa-spinner fa-pulse"></i> A carregar...
+                </div>
+            </div>
+            
+            <div class="votacao-status" id="votacaoInfo">
+                <i class="fas fa-info-circle"></i> Nomeações a decorrer...
+            </div>
+        </div>
+        
+        <div style="text-align: center;">
+            <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Voltar à App</a>
+        </div>
+    </div>
+    
+    <div class="bottom-menu">
+        <a href="index.html" class="menu-item">
+            <i class="fas fa-home"></i><span>Início</span>
+        </a>
+        <a href="expulsoes.html" class="menu-item">
+            <i class="fas fa-skull"></i><span>Expulsões</span>
+        </a>
+        <a href="nomeados-semana.html" class="menu-item active">
+            <i class="fas fa-list"></i><span>Nomeados</span>
+        </a>
+        <a href="estatisticas.html" class="menu-item">
+            <i class="fas fa-chart-simple"></i><span>Stats</span>
+        </a>
+    </div>
+    
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDhLsFf02lCuSB1i6Wd-Jb-c28KcGVNDro",
+            authDomain: "tvi-reality-b2cf7.firebaseapp.com",
+            projectId: "tvi-reality-b2cf7",
+            storageBucket: "tvi-reality-b2cf7.firebasestorage.app",
+            messagingSenderId: "956824114157",
+            appId: "1:956824114157:web:5205bcb8140875efeacde4"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        async function carregarNomeados() {
+            const container = document.getElementById('nomeadosList');
+            
+            try {
+                // Buscar eventos estruturados do tipo 'nomeacao' da última semana
+                const umaSemanaAtras = new Date();
+                umaSemanaAtras.setDate(umaSemanaAtras.getDate() - 7);
+                
+                const snapshot = await db.collection('eventos_estruturados')
+                    .where('tipo', '==', 'nomeacao')
+                    .where('data', '>=', umaSemanaAtras)
+                    .orderBy('data', 'desc')
+                    .get();
+                
+                // Extrair nomeados únicos
+                const nomeados = new Set();
+                snapshot.forEach(doc => {
+                    const evento = doc.data();
+                    if (evento.alvo) nomeados.add(evento.alvo);
+                });
+                
+                if (nomeados.size === 0) {
+                    container.innerHTML = `
+                        <div style="text-align:center; padding:40px; opacity:0.6;">
+                            <i class="fas fa-info-circle"></i> Nenhuma nomeação registada esta semana.
+                        </div>`;
+                    return;
+                }
+                
+                let html = '';
+                for (const nome of nomeados) {
+                    // Buscar foto do concorrente
+                    const concSnapshot = await db.collection('concorrentes')
+                        .where('nome', '==', nome)
+                        .limit(1)
+                        .get();
+                    
+                    let foto = 'https://via.placeholder.com/70';
+                    let slug = '';
+                    
+                    if (!concSnapshot.empty) {
+                        const conc = concSnapshot.docs[0].data();
+                        foto = conc.foto || foto;
+                        slug = conc.slug || '';
+                    }
+                    
+                    html += `
+                        <div class="nomeado-card" onclick="verConcorrente('${slug}')">
+                            <img src="${foto}" class="nomeado-avatar" onerror="this.src='https://via.placeholder.com/70'">
+                            <div class="nomeado-info">
+                                <div class="nomeado-nome">${escapeHtml(nome)}</div>
+                                <div class="nomeado-status">
+                                    <i class="fas fa-exclamation-triangle"></i> Nomeado esta semana
+                                </div>
+                            </div>
+                            <i class="fas fa-chevron-right" style="color:#ff69b4;"></i>
+                        </div>
+                    `;
+                }
+                
+                container.innerHTML = html;
+                
+            } catch (error) {
+                console.error('Erro:', error);
+                container.innerHTML = '<div style="text-align:center; padding:40px; color:red;">Erro ao carregar nomeados</div>';
+            }
+        }
+        
+        window.verConcorrente = (slug) => {
+            if (slug) window.location.href = `/concorrente/${slug}`;
+        };
+        
+        carregarNomeados();
+        
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+    </script>
+</body>
+</html>
